@@ -1,14 +1,11 @@
 /**
  * Tax Calculator for Sri Lanka (Year of Assessment 2025/2026)
- * Based on 2026 Tax Brackets:
- * Personal Relief: Rs. 1,800,000 per annum (Rs. 150,000 per month)
- *
- * Tax Bands (Taxable Income):
- * 1. First Rs. 1,000,000 per annum (Rs. 83,333 per month) @ 6%
- * 2. Next Rs. 500,000 per annum (Rs. 41,667 per month) @ 18%
- * 3. Next Rs. 500,000 per annum (Rs. 41,667 per month) @ 24%
- * 4. Next Rs. 500,000 per annum (Rs. 41,667 per month) @ 30%
- * 5. Balance @ 36%
+ * Includes EPF, ETF, and Take Home Pay calculations.
+ * 
+ * EPF Employee: 8% of (Basic + Fixed Allowances)
+ * EPF Employer: 12% of (Basic + Fixed Allowances)
+ * ETF Employer: 3% of (Basic + Fixed Allowances)
+ * APIT (Tax): Based on Total Earnings (Basic + Fixed + Other Allowances) - Relief
  */
 
 export const TAX_BRACKETS = [
@@ -31,22 +28,43 @@ export const formatCurrency = (amount) => {
     }).format(amount);
 };
 
-export const calculateTax = (inputIncome, mode = 'monthly') => {
+export const calculateTax = (basicSalary, fixedAllowances, otherAllowances, mode = 'monthly') => {
     const isMonthly = mode === 'monthly';
-    const totalIncome = parseFloat(inputIncome) || 0;
 
-    if (totalIncome <= 0) {
+    const basic = parseFloat(basicSalary) || 0;
+    const fixed = parseFloat(fixedAllowances) || 0;
+    const other = parseFloat(otherAllowances) || 0;
+
+    const totalEarnings = basic + fixed + other;
+
+    // EPF/ETF Base = Basic + Fixed Allowances only
+    const epfBase = basic + fixed;
+
+    if (totalEarnings <= 0) {
         return {
             tax: 0,
-            netIncome: 0,
+            netSalary: 0,
+            epfEmployee: 0,
+            epfEmployer: 0,
+            etfEmployer: 0,
+            totalEarnings: 0,
             taxableIncome: 0,
             brackets: []
         };
     }
 
-    // Convert everything to annual for calculation standard
-    const annualIncome = isMonthly ? totalIncome * 12 : totalIncome;
-    let taxableIncome = Math.max(0, annualIncome - ANNUAL_RELIEF);
+    // Calculate Statutory Deductions (Monthly)
+    // If mode is annual, we assume inputs are annual, so we calculate annual EPF/ETF
+    const epfEmployee = epfBase * 0.08;
+    const epfEmployer = epfBase * 0.12;
+    const etfEmployer = epfBase * 0.03;
+
+    // Calculate Tax (APIT)
+    // Convert everything to annual for standard tax calculation
+    const annualTotalEarnings = isMonthly ? totalEarnings * 12 : totalEarnings;
+    const annualRelief = ANNUAL_RELIEF;
+
+    const taxableIncome = Math.max(0, annualTotalEarnings - annualRelief);
     let taxAmount = 0;
     let remainingTaxable = taxableIncome;
 
@@ -71,20 +89,35 @@ export const calculateTax = (inputIncome, mode = 'monthly') => {
         }
     }
 
-    // Convert back to monthly if needed
+    // Convert tax back to monthly if needed
     const finalTax = isMonthly ? taxAmount / 12 : taxAmount;
     const finalTaxable = isMonthly ? taxableIncome / 12 : taxableIncome;
-    const netIncome = totalIncome - finalTax;
+
+    // Stamp Duty
+    // RS. 25.00 if net salary >= 25,000 (standard practice, though technically on receipts)
+    const netBeforeStamp = totalEarnings - (epfEmployee + finalTax);
+    let stampDuty = 0;
+    if (netBeforeStamp >= 25000) {
+        stampDuty = isMonthly ? 25 : 25 * 12;
+    }
+
+    // Net Salary = Total Earnings - (EPF Employee + APIT + Stamp Duty)
+    const netSalary = totalEarnings - (epfEmployee + finalTax + stampDuty);
 
     return {
         tax: finalTax,
-        netIncome: netIncome,
+        netSalary: netSalary,
+        epfEmployee: epfEmployee,
+        epfEmployer: epfEmployer,
+        etfEmployer: etfEmployer,
+        stampDuty: stampDuty,
+        totalEarnings: totalEarnings,
         taxableIncome: finalTaxable,
         brackets: isMonthly ? bracketBreakdown.map(b => ({
             ...b,
             amount: b.amount / 12,
             tax: b.tax / 12,
-            limit: b.limit / 12 // approximate visual limit for monthly
+            limit: b.limit / 12
         })) : bracketBreakdown
     };
 };

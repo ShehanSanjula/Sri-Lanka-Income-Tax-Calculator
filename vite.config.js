@@ -8,5 +8,5 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
-  base: '/tax-calculator/',
+  base: '/Sri-Lanka-Income-Tax-Calculator/',
 })
