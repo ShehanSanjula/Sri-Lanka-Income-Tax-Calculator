@@ -93,5 +93,5 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ---
 
 <div align="center">
-  <small>Data Processed Locally in Browser | Open Source Project</small>
+  <small> Data Processed Locally in Browser | Open Source Project </small>
 </div>
