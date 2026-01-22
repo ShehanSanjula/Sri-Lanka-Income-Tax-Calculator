@@ -27,7 +27,7 @@ A premium, privacy-focused, and fully responsive Income Tax Calculator for Sri L
 -   **Frontend**: React (Vite)
 -   **Styling**: Tailwind CSS
 -   **Icons**: Heroicons
--   **Deployment**: GitHub Pages (Automated via Actions)
+-   **Deployment**: GitHub Pages
 
 ## 🚀 Getting Started
 
