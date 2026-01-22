@@ -1,7 +1,14 @@
 {
-  "name": "my-tax-calculator",
+  "name": "sri-lanka-income-tax-calculator",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "A premium React-based Sri Lanka Income Tax Calculator for Y/A 2025/2026.",
+  "author": "Shehan Sanjula",
+  "homepage": "https://shehansanjula.github.io/Sri-Lanka-Income-Tax-Calculator/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ShehanSanjula/Sri-Lanka-Income-Tax-Calculator.git"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",
