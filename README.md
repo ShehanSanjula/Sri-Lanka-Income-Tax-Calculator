@@ -1,8 +1,8 @@
 
 # 🇱🇰 Sri Lanka Income Tax Calculator (2025/2026)
 
-![GitHub last commit](https://img.shields.io/github/last-commit/ShehanSanjula/Sri-Lanka-Income-Tax-Calculator?style=for-the-badge&color=emerald)
-![GitHub license](https://img.shields.io/github/license/ShehanSanjula/Sri-Lanka-Income-Tax-Calculator?style=for-the-badge&color=amber)
+![GitHub last commit](https://img.shields.io/github/last-commit/shehansanjula/Sri-Lanka-Income-Tax-Calculator?style=for-the-badge&color=emerald)
+![GitHub license](https://img.shields.io/github/license/shehansanjula/Sri-Lanka-Income-Tax-Calculator?style=for-the-badge&color=amber)
 [![Live Demo](https://img.shields.io/badge/Live_Demo-Click_Here-FFD700?style=for-the-badge&logo=github&logoColor=black)](https://shehansanjula.github.io/Sri-Lanka-Income-Tax-Calculator/)
 [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
@@ -40,7 +40,7 @@ A premium, privacy-focused, and fully responsive Income Tax Calculator for Sri L
 
 1.  **Clone the repository**
     ```bash
-    git clone https://github.com/ShehanSanjula/Sri-Lanka-Income-Tax-Calculator.git
+    git clone https://github.com/shehansanjula/Sri-Lanka-Income-Tax-Calculator.git
     cd Sri-Lanka-Income-Tax-Calculator
     ```
 
@@ -83,8 +83,8 @@ Contributions are welcome! If you find a bug or want to suggest a feature:
 **Shehan Sanjula**
 
 -   Website: [shehansanjula.github.io](https://shehansanjula.github.io)
--   LinkedIn: [linkedin.com/in/shehansanjula](https://www.linkedin.com/in/shehansanjula)
--   Facebook: [facebook.com/shehansanjula](https://www.facebook.com/shehansanjula)
+-   LinkedIn: [linkedin.com/in/shehansanjula](https://lk.linkedin.com/in/shehansanjula)
+-   Facebook: [facebook.com/shehansanjula66](https://www.facebook.com/shehansanjula66)
 
 ## 📄 License
 
