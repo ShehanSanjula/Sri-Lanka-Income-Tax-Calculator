@@ -184,7 +184,7 @@ function App() {
                       value={investmentIncome}
                       onChange={setInvestmentIncome}
                       max={100000000000}
-                      placeholder="Interest / Dividends / FD"
+                      placeholder="Int / Div / FD"
                       suffix="LKR"
                       icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>}
                       subtext="10% WHT / AIT"
@@ -440,7 +440,7 @@ const FormattedInput = ({ label, value, onChange, placeholder, suffix, icon, sub
           value={value}
           onChange={handleChange}
           placeholder={placeholder}
-          className="w-full bg-[#064e3b]/30 border border-emerald-500/20 text-white rounded-xl py-3.5 pl-12 pr-12 outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500/50 transition-all font-mono text-sm placeholder:text-emerald-800 shadow-inner"
+          className="w-full bg-[#064e3b]/30 border border-emerald-500/20 text-white rounded-xl py-3.5 pl-12 pr-12 outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500/50 transition-all font-mono text-lg placeholder:text-emerald-800 shadow-inner"
         />
         <span className="absolute right-0 top-0 h-full flex items-center pr-4 pointer-events-none">
           <span className="text-xs text-emerald-600 font-medium tracking-wider">{suffix}</span>
