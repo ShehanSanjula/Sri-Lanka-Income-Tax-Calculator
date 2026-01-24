@@ -16,6 +16,19 @@ function App() {
   // Helper to remove commas for calculation
   const cleanNumber = (val) => val.replace(/,/g, '');
 
+  const handleModeChange = (newMode) => {
+    if (newMode === mode) return;
+    setMode(newMode);
+    // Clear all inputs on mode switch due to different limits
+    setBasic('');
+    setFixedAllowances('');
+    setOtherAllowances('');
+    setExportIncome('');
+    setInvestmentIncome('');
+    setSpecialGains('');
+    setResult(null);
+  };
+
   useEffect(() => {
     // Fetch real view count using a unique namespace
     // Using shehansanjula-tax-calc namespace to ensure uniqueness
@@ -128,8 +141,8 @@ function App() {
                 <div className="relative space-y-6">
                   {/* Mode Toggle */}
                   <div className="bg-[#064e3b]/40 p-1.5 rounded-xl inline-flex w-full border border-amber-500/10">
-                    <button onClick={() => setMode('monthly')} className={`flex-1 py-2 rounded-lg text-xs font-semibold transition-all duration-300 ${mode === 'monthly' ? 'bg-[#065f46] text-white shadow-lg shadow-black/20 ring-1 ring-white/10' : 'text-emerald-200/60 hover:text-emerald-100'}`}>Monthly</button>
-                    <button onClick={() => setMode('annual')} className={`flex-1 py-2 rounded-lg text-xs font-semibold transition-all duration-300 ${mode === 'annual' ? 'bg-[#065f46] text-white shadow-lg shadow-black/20 ring-1 ring-white/10' : 'text-emerald-200/60 hover:text-emerald-100'}`}>Annual</button>
+                    <button onClick={() => handleModeChange('monthly')} className={`flex-1 py-2 rounded-lg text-xs font-semibold transition-all duration-300 ${mode === 'monthly' ? 'bg-[#065f46] text-white shadow-lg shadow-black/20 ring-1 ring-white/10' : 'text-emerald-200/60 hover:text-emerald-100'}`}>Monthly</button>
+                    <button onClick={() => handleModeChange('annual')} className={`flex-1 py-2 rounded-lg text-xs font-semibold transition-all duration-300 ${mode === 'annual' ? 'bg-[#065f46] text-white shadow-lg shadow-black/20 ring-1 ring-white/10' : 'text-emerald-200/60 hover:text-emerald-100'}`}>Annual</button>
                   </div>
 
                   <div className="space-y-5">
