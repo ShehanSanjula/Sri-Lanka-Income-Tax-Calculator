@@ -102,6 +102,8 @@ function App() {
                   </div>
 
                   <div className="space-y-5">
+                    <p className="text-[10px] uppercase tracking-widest text-amber-500/70 font-bold">Employment Income</p>
+
                     <FormattedInput
                       label="Basic Salary"
                       value={basic}
