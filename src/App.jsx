@@ -10,19 +10,29 @@ function App() {
   const [specialGains, setSpecialGains] = useState('');
   const [mode, setMode] = useState('monthly');
   const [result, setResult] = useState(null);
-  const [viewCount, setViewCount] = useState(12540); // Initial mock views
+  const [viewCount, setViewCount] = useState(null); // Initialize as null for loading state
 
   // Helper to remove commas for calculation
   const cleanNumber = (val) => val.replace(/,/g, '');
 
   useEffect(() => {
-    // Simulate live view counter updates
-    const interval = setInterval(() => {
-      if (Math.random() > 0.7) {
-        setViewCount(prev => prev + 1);
+    // Fetch real view count using a unique namespace
+    // Using shehansanjula-tax-calc namespace to ensure uniqueness
+    const fetchViews = async () => {
+      try {
+        const response = await fetch('https://api.countapi.xyz/hit/shehansanjula-tax-calc/visits');
+        if (response.ok) {
+          const data = await response.json();
+          setViewCount(data.value);
+        }
+      } catch (error) {
+        console.error("Failed to fetch view count:", error);
+        // Fallback to a default number if API fails, or keep null to show nothing/loading
+        setViewCount(100);
       }
-    }, 3000);
-    return () => clearInterval(interval);
+    };
+
+    fetchViews();
   }, []);
 
   useEffect(() => {
@@ -97,7 +107,7 @@ function App() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                 </svg>
-                <span className="font-mono">{formatViewCount(viewCount)}</span>
+                <span className="font-mono">{viewCount !== null ? formatViewCount(viewCount) : '...'}</span>
               </div>
             </div>
           </div>
