@@ -440,7 +440,7 @@ const FormattedInput = ({ label, value, onChange, placeholder, suffix, icon, sub
           value={value}
           onChange={handleChange}
           placeholder={placeholder}
-          className="w-full bg-[#064e3b]/30 border border-emerald-500/20 text-white rounded-xl py-3.5 pl-12 pr-12 outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500/50 transition-all font-mono text-lg placeholder:text-emerald-800 shadow-inner"
+          className="w-full bg-[#064e3b]/30 border border-emerald-500/20 text-white rounded-xl py-3.5 pl-12 pr-12 outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500/50 transition-all font-mono text-sm placeholder:text-emerald-800 shadow-inner"
         />
         <span className="absolute right-0 top-0 h-full flex items-center pr-4 pointer-events-none">
           <span className="text-xs text-emerald-600 font-medium tracking-wider">{suffix}</span>
