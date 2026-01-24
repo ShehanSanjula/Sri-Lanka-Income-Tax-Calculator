@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
-import { calculateTax, formatCurrency } from './utils/taxCalculator';
+import { calculateTax, formatCurrency, formatCompactNumber } from './utils/taxCalculator';
 
 function App() {
   const [basic, setBasic] = useState('');
   const [fixedAllowances, setFixedAllowances] = useState('');
   const [otherAllowances, setOtherAllowances] = useState('');
+  const [exportIncome, setExportIncome] = useState('');
+  const [investmentIncome, setInvestmentIncome] = useState('');
+  const [specialGains, setSpecialGains] = useState('');
   const [mode, setMode] = useState('monthly');
   const [result, setResult] = useState(null);
 
@@ -16,17 +19,20 @@ function App() {
     const basicVal = cleanNumber(basic);
     const fixedVal = cleanNumber(fixedAllowances);
     const otherVal = cleanNumber(otherAllowances);
+    const exportVal = cleanNumber(exportIncome);
+    const investVal = cleanNumber(investmentIncome);
+    const specialVal = cleanNumber(specialGains);
 
     const basicNum = parseInt(basicVal || '0', 10);
 
     if (basicNum > 0 && basicNum <= 1000) {
       setResult(null);
-    } else if (basicVal || fixedVal || otherVal) {
-      setResult(calculateTax(basicVal, fixedVal, otherVal, mode));
+    } else if (basicVal || fixedVal || otherVal || exportVal || investVal || specialVal) {
+      setResult(calculateTax(basicVal, fixedVal, otherVal, exportVal, investVal, specialVal, mode));
     } else {
       setResult(null);
     }
-  }, [basic, fixedAllowances, otherAllowances, mode]);
+  }, [basic, fixedAllowances, otherAllowances, exportIncome, investmentIncome, specialGains, mode]);
 
   return (
     <div className="min-h-screen bg-[#022c22] text-emerald-100 font-sans selection:bg-emerald-500/30 overflow-x-hidden relative custom-scrollbar">
@@ -126,6 +132,42 @@ function App() {
                       icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>}
                       subtext="Taxable Only"
                     />
+
+                    <div className="h-px bg-emerald-500/10 my-2"></div>
+                    <p className="text-[10px] uppercase tracking-widest text-amber-500/70 font-bold">Advanced Income Sources</p>
+
+                    <FormattedInput
+                      label="Service Export Income"
+                      value={exportIncome}
+                      onChange={setExportIncome}
+                      max={100000000000}
+                      placeholder="USD Earnings (LKR)"
+                      suffix="LKR"
+                      icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>}
+                      subtext="Capped at 15% Tax Rate"
+                    />
+
+                    <FormattedInput
+                      label="Investment Income"
+                      value={investmentIncome}
+                      onChange={setInvestmentIncome}
+                      max={100000000000}
+                      placeholder="Interest / Dividends"
+                      suffix="LKR"
+                      icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>}
+                      subtext="10% WHT / AIT"
+                    />
+
+                    <FormattedInput
+                      label="Special Gains"
+                      value={specialGains}
+                      onChange={setSpecialGains}
+                      max={100000000000}
+                      placeholder="Betting / Liquor"
+                      suffix="LKR"
+                      icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>}
+                      subtext="Flat 45% Tax"
+                    />
                   </div>
                 </div>
               </div>
@@ -161,8 +203,8 @@ function App() {
                       <div className="text-center w-full">
                         <p className="text-emerald-200/80 font-medium uppercase tracking-widest text-sm mb-3">Estimated Take Home Pay</p>
                         <div className="flex items-baseline justify-center gap-2 flex-wrap">
-                          <span className="text-5xl lg:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-amber-100 via-amber-200 to-amber-500 font-sans tracking-tight drop-shadow-sm whitespace-nowrap">
-                            {formatCurrency(result.netSalary).replace('LKR', '').trim()}
+                          <span className="text-5xl lg:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-amber-100 via-amber-200 to-amber-500 font-sans tracking-tight drop-shadow-sm whitespace-nowrap" title={formatCurrency(result.netSalary)}>
+                            {formatCompactNumber(result.netSalary)}
                           </span>
                           <span className="text-xl text-amber-500/80 font-medium">LKR</span>
                         </div>
@@ -202,6 +244,19 @@ function App() {
                       total={{ label: "Total Deductions", value: result.tax + result.epfEmployee + result.stampDuty }}
                     />
 
+                    {(result.breakdown.export > 0 || result.breakdown.investment > 0 || result.breakdown.special > 0) && (
+                      <DetailCard
+                        title="Tax Components"
+                        items={[
+                          { label: "Standard Tax", value: result.breakdown.standard, color: "text-red-200" },
+                          ...(result.breakdown.export > 0 ? [{ label: "Export Income Tax (15% Cap)", value: result.breakdown.export, color: "text-amber-200" }] : []),
+                          ...(result.breakdown.investment > 0 ? [{ label: "Investment Income Tax (10%)", value: result.breakdown.investment, color: "text-blue-200" }] : []),
+                          ...(result.breakdown.special > 0 ? [{ label: "Special Gains Tax (45%)", value: result.breakdown.special, color: "text-purple-200" }] : [])
+                        ]}
+                        total={{ label: "Total Tax", value: result.tax }}
+                      />
+                    )}
+
                     <DetailCard
                       title="Employer Contributions"
                       items={[
@@ -223,7 +278,10 @@ function App() {
                           <div className="flex items-center gap-3">
                             <span className={`w-1.5 h-1.5 rounded-full ${b.tax > 0 ? 'bg-amber-400 shadow-[0_0_8px] shadow-amber-500/50' : 'bg-emerald-900'}`}></span>
                             <span className="text-emerald-200/80">
-                              <span className="text-white font-mono font-bold mr-2">{Math.round(b.rate * 100)}%</span>
+                              <span className="text-white font-mono font-bold mr-2">
+                                {typeof b.rate === 'string' ? b.rate : (Math.round(b.rate * 100) + '%')}
+                              </span>
+                              {b.label && <span className="text-xs text-amber-400 mr-2">[{b.label}]</span>}
                               on {formatCurrency(b.amount).replace('LKR', '').replace('.00', '').trim()}
                             </span>
                           </div>
@@ -249,6 +307,7 @@ function App() {
               <div className="space-y-6">
                 <NoteBlock title="Legislative Authority">
                   <p>Based on the <strong>Inland Revenue (Amendment) Act No. 02 of 2025</strong>. New individual income tax rates effective from April 01, 2025.</p>
+                  <p className="mt-2 text-xs text-emerald-300">Includes provisions for Service Export (15% cap), Investment Income (10%), and Special Gains (45%).</p>
                 </NoteBlock>
                 <NoteBlock title="Relief Structure">
                   <p>Annual Tax Free Threshold: <strong>Rs. 1,800,000</strong></p>
