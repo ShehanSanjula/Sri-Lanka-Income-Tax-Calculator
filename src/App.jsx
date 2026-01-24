@@ -17,7 +17,11 @@ function App() {
     const fixedVal = cleanNumber(fixedAllowances);
     const otherVal = cleanNumber(otherAllowances);
 
-    if (basicVal || fixedVal || otherVal) {
+    const basicNum = parseInt(basicVal || '0', 10);
+
+    if (basicNum > 0 && basicNum <= 1000) {
+      setResult(null);
+    } else if (basicVal || fixedVal || otherVal) {
       setResult(calculateTax(basicVal, fixedVal, otherVal, mode));
     } else {
       setResult(null);
