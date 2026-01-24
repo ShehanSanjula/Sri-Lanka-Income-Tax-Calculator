@@ -96,6 +96,7 @@ function App() {
                       label="Basic Salary"
                       value={basic}
                       onChange={setBasic}
+                      max={5000000}
                       placeholder="150,000"
                       suffix="LKR"
                       icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" /></svg>}
@@ -312,7 +313,7 @@ function App() {
 }
 
 // Sub-components
-const FormattedInput = ({ label, value, onChange, placeholder, suffix, icon, subtext }) => {
+const FormattedInput = ({ label, value, onChange, placeholder, suffix, icon, subtext, max }) => {
   // Format number with commas
   const formatNumber = (val) => {
     if (!val) return '';
@@ -326,6 +327,7 @@ const FormattedInput = ({ label, value, onChange, placeholder, suffix, icon, sub
     const rawValue = val.replace(/,/g, '');
     // Only allow numbers
     if (!/^\d*$/.test(rawValue)) return;
+    if (max && parseInt(rawValue || '0', 10) > max) return;
     onChange(formatNumber(val));
   };
 
