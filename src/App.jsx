@@ -120,7 +120,7 @@ function App() {
                       label="Other Income"
                       value={otherAllowances}
                       onChange={setOtherAllowances}
-                      max={5000000000}
+                      max={100000000000}
                       placeholder="10,000"
                       suffix="LKR"
                       icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>}
