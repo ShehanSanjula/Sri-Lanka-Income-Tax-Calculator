@@ -13,8 +13,13 @@ A premium, privacy-focused, and fully responsive Income Tax Calculator for Sri L
 
 - **🚀 Instant Calculation**: Real-time updates as you type.
 - **🔒 Privacy First**: All data is processed locally in your browser. No data is sent to any server.
+- ** Advanced Income Calculation**: Support for diverse income streams:
+    - **Service Export Income**: Capped at **15%** tax rate.
+    - **Investment Income**: Fixed **10%** WHT/AIT.
+    - **Special Gains**: Flat **45%** tax for betting/gaming profits.
+- **👀 Live View Counter**: Real-time global visitor count powered by CounterAPI.
 - **🎨 Premium UI**: "Fluid Cyber Wealth" theme with glassmorphism and smooth animations.
-- **📱 Mobile Optimized**: Responsive 3-column dashboard layout that works perfectly on all devices.
+- **📱 Smart Formatting**: Handles large numbers (Millions/Billions) gracefully without breaking the layout.
 - **📊 Visual Breakdown**: Interactive Donut Chart for visualizing salary distribution.
 - **📋 Detailed Reports**:
     - **APIT (Tax)** calculation based on official 6-tier tax slabs.
@@ -27,6 +32,7 @@ A premium, privacy-focused, and fully responsive Income Tax Calculator for Sri L
 -   **Frontend**: React (Vite)
 -   **Styling**: Tailwind CSS
 -   **Icons**: Heroicons
+-   **API**: CounterAPI (for view counting)
 -   **Deployment**: GitHub Pages
 
 ## 🚀 Getting Started
@@ -58,14 +64,25 @@ A premium, privacy-focused, and fully responsive Income Tax Calculator for Sri L
 
 Based on the **Inland Revenue (Amendment) Act No. 02 of 2025**:
 
+### Standard Employment Income
 -   **Tax-Free Threshold**: Rs. 150,000 / month (Rs. 1,800,000 / year).
 -   **Relief**: First Rs. 150,000 is tax-free.
--   **Tax Slabs**:
+-   **Progressive Tax Slabs**:
     -   Next Rs. 100,000: **6%**
     -   Next Rs. 50,000: **18%**
     -   Next Rs. 50,000: **24%**
     -   Next Rs. 50,000: **30%**
     -   Balance: **36%**
+
+### Advanced Categories
+-   **Service Export Income**: Taxed at progressive rates but **capped at 15%**.
+-   **Investment Income**: Flat rate of **10%**.
+-   **Special Gains**: Flat rate of **45%** (Liquor, Tobacco, Betting).
+
+### Other Deductions
+-   **EPF (Employee)**: 8%
+-   **EPF (Employer)**: 12%
+-   **ETF (Employer)**: 3%
 -   **Stamp Duty**: Rs. 25/month if Net Salary > Rs. 25,000.
 
 ## 🤝 Contributing
