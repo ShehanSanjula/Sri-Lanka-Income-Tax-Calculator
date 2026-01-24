@@ -17,22 +17,6 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          name: ${{ github.ref_name }} - 2026 Stable
-          body: |
-             ## 🚀 **New Release: ${{ github.ref_name }}**
-             
-             **2026 Stable Release with Seasonal Themes**
-             
-             ### ✨ Features
-             - **Automatic Seasonal Decorations**:
-               - 🎄 **Christmas** (Nov-Dec): Snow, Santa, Tree.
-               - 🌞 **New Year** (Mar-Apr): Erabadu Tree, Koha, Butterfly.
-               - ☸️ **Vesak & Poson** (May-Jun): Lanterns, Lotus Scene.
-             - **Optimized UI**: Greeting badge matches website theme (Dark/Teal or Gold).
-             - **Documentation**: Updated README badges.
-
-             Enjoy the new festive updates! 🎉
-          draft: false
-          prerelease: false
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
