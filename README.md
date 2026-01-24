@@ -67,11 +67,11 @@ Based on the **Inland Revenue (Amendment) Act No. 02 of 2025**:
 ### Standard Employment Income
 -   **Tax-Free Threshold**: Rs. 150,000 / month (Rs. 1,800,000 / year).
 -   **Relief**: First Rs. 150,000 is tax-free.
--   **Progressive Tax Slabs**:
-    -   Next Rs. 100,000: **6%**
-    -   Next Rs. 50,000: **18%**
-    -   Next Rs. 50,000: **24%**
-    -   Next Rs. 50,000: **30%**
+-   **Progressive Tax Slabs (Annual Taxable Income)**:
+    -   First Rs. 1,000,000: **6%**
+    -   Next Rs. 500,000: **18%**
+    -   Next Rs. 500,000: **24%**
+    -   Next Rs. 500,000: **30%**
     -   Balance: **36%**
 
 ### Advanced Categories
