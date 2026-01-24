@@ -13,7 +13,7 @@ A premium, privacy-focused, and fully responsive Income Tax Calculator for Sri L
 
 - **🚀 Instant Calculation**: Real-time updates as you type.
 - **🔒 Privacy First**: All data is processed locally in your browser. No data is sent to any server.
-- ** Advanced Income Calculation**: Support for diverse income streams:
+- **Advanced Income Calculation**: Support for diverse income streams:
     - **Service Export Income**: Capped at **15%** tax rate.
     - **Investment Income**: Fixed **10%** WHT/AIT.
     - **Special Gains**: Flat **45%** tax for betting/gaming profits.
@@ -22,7 +22,7 @@ A premium, privacy-focused, and fully responsive Income Tax Calculator for Sri L
 - **📱 Smart Formatting**: Handles large numbers (Millions/Billions) gracefully without breaking the layout.
 - **📊 Visual Breakdown**: Interactive Donut Chart for visualizing salary distribution.
 - **📋 Detailed Reports**:
-    - **APIT (Tax)** calculation based on official 6-tier tax slabs.
+    - **APIT (Tax)** calculation based on official 5-tier tax slabs.
     - **EPF/ETF** computations for both employee and employer.
     - **Stamp Duty** logic (New for 2025).
     - **Total Deductions** & **Cost to Company**.
