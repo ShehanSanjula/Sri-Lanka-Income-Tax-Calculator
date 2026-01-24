@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { calculateTax, formatCurrency, formatCompactNumber } from './utils/taxCalculator';
+import { calculateTax, formatCurrency, formatCompactNumber, formatViewCount } from './utils/taxCalculator';
 
 function App() {
   const [basic, setBasic] = useState('');
@@ -10,9 +10,20 @@ function App() {
   const [specialGains, setSpecialGains] = useState('');
   const [mode, setMode] = useState('monthly');
   const [result, setResult] = useState(null);
+  const [viewCount, setViewCount] = useState(12540); // Initial mock views
 
   // Helper to remove commas for calculation
   const cleanNumber = (val) => val.replace(/,/g, '');
+
+  useEffect(() => {
+    // Simulate live view counter updates
+    const interval = setInterval(() => {
+      if (Math.random() > 0.7) {
+        setViewCount(prev => prev + 1);
+      }
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     // Clean inputs before calculating
@@ -76,9 +87,18 @@ function App() {
                 <p className="text-[10px] text-amber-400 font-mono uppercase tracking-widest pl-0.5">Y/A 2025/2026</p>
               </div>
             </div>
-            <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-900/20 border border-emerald-500/20 text-xs font-medium text-emerald-100/80 hover:bg-emerald-900/30 transition-colors cursor-default">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              Official Rates
+            <div className="hidden md:flex items-center gap-3">
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-900/20 border border-emerald-500/20 text-xs font-medium text-emerald-100/80 hover:bg-emerald-900/30 transition-colors cursor-default">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                Official Rates
+              </div>
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-900/20 border border-amber-500/20 text-xs font-medium text-amber-100/80 hover:bg-amber-900/30 transition-colors cursor-default" title="Total Views">
+                <svg className="w-3.5 h-3.5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                <span className="font-mono">{formatViewCount(viewCount)}</span>
+              </div>
             </div>
           </div>
         </nav>

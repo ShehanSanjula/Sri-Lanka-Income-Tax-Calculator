@@ -40,6 +40,19 @@ export const formatCompactNumber = (number) => {
     return formatCurrency(number).replace('LKR', '').trim();
 };
 
+export const formatViewCount = (number) => {
+    if (number >= 1000000000) {
+        return (number / 1000000000).toFixed(1) + 'B';
+    }
+    if (number >= 1000000) {
+        return (number / 1000000).toFixed(1) + 'M';
+    }
+    if (number >= 1000) {
+        return (number / 1000).toFixed(1) + 'k';
+    }
+    return number.toString();
+};
+
 export const calculateTax = (basicSalary, fixedAllowances, otherAllowances, exportIncomeInput, investmentIncomeInput, specialGainsInput, mode = 'monthly') => {
     const isMonthly = mode === 'monthly';
     const multiplier = isMonthly ? 12 : 1;
