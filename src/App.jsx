@@ -9,6 +9,7 @@ function App() {
   const [investmentIncome, setInvestmentIncome] = useState('');
   const [specialGains, setSpecialGains] = useState('');
   const [mode, setMode] = useState('monthly');
+  const [showAdvanced, setShowAdvanced] = useState(false);
   const [result, setResult] = useState(null);
   const [viewCount, setViewCount] = useState(null); // Initialize as null for loading state
 
@@ -166,40 +167,53 @@ function App() {
                     />
 
                     <div className="h-px bg-emerald-500/10 my-2"></div>
-                    <p className="text-[10px] uppercase tracking-widest text-amber-500/70 font-bold">Advanced Income Sources</p>
+                    <div className="flex items-center justify-between">
+                      <p className="text-[10px] uppercase tracking-widest text-amber-500/70 font-bold">Advanced Income Sources</p>
+                      <button
+                        onClick={() => setShowAdvanced(!showAdvanced)}
+                        className="md:hidden flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-900/40 border border-emerald-500/20 text-[10px] font-bold text-emerald-400 hover:bg-emerald-900/60 hover:text-emerald-300 transition-all"
+                      >
+                        <span>{showAdvanced ? 'Hide' : 'Show'}</span>
+                        <svg className={`w-3 h-3 transition-transform ${showAdvanced ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                    </div>
 
-                    <FormattedInput
-                      label="Service Export Income"
-                      value={exportIncome}
-                      onChange={setExportIncome}
-                      max={100000000000}
-                      placeholder="USD Earnings (LKR)"
-                      suffix="LKR"
-                      icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>}
-                      subtext="Capped at 15% Tax Rate"
-                    />
+                    <div className={`${showAdvanced ? 'block' : 'hidden'} md:block space-y-5`}>
+                      <FormattedInput
+                        label="Service Export Income"
+                        value={exportIncome}
+                        onChange={setExportIncome}
+                        max={100000000000}
+                        placeholder="USD Earnings (LKR)"
+                        suffix="LKR"
+                        icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>}
+                        subtext="Capped at 15% Tax Rate"
+                      />
 
-                    <FormattedInput
-                      label="Investment Income"
-                      value={investmentIncome}
-                      onChange={setInvestmentIncome}
-                      max={100000000000}
-                      placeholder="Interest/ Div/ FD"
-                      suffix="LKR"
-                      icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>}
-                      subtext="10% WHT / AIT"
-                    />
+                      <FormattedInput
+                        label="Investment Income"
+                        value={investmentIncome}
+                        onChange={setInvestmentIncome}
+                        max={100000000000}
+                        placeholder="Interest/ Div/ FD"
+                        suffix="LKR"
+                        icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>}
+                        subtext="10% WHT / AIT"
+                      />
 
-                    <FormattedInput
-                      label="Special Gains"
-                      value={specialGains}
-                      onChange={setSpecialGains}
-                      max={100000000000}
-                      placeholder="Betting / Liquor"
-                      suffix="LKR"
-                      icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>}
-                      subtext="Flat 45% Tax"
-                    />
+                      <FormattedInput
+                        label="Special Gains"
+                        value={specialGains}
+                        onChange={setSpecialGains}
+                        max={100000000000}
+                        placeholder="Betting / Liquor"
+                        suffix="LKR"
+                        icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>}
+                        subtext="Flat 45% Tax"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
