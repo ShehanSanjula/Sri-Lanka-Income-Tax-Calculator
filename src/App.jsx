@@ -20,10 +20,10 @@ function App() {
     // Using shehansanjula-tax-calc namespace to ensure uniqueness
     const fetchViews = async () => {
       try {
-        const response = await fetch('https://api.countapi.xyz/hit/shehansanjula-tax-calc/visits');
+        const response = await fetch('https://api.counterapi.dev/v1/shehansanjula-tax-calc/visits/up');
         if (response.ok) {
           const data = await response.json();
-          setViewCount(data.value);
+          setViewCount(data.count);
         }
       } catch (error) {
         console.error("Failed to fetch view count:", error);
