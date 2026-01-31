@@ -15,7 +15,7 @@ A premium, privacy-focused, and fully responsive Income Tax Calculator for Sri L
 - **🔒 Privacy First**: All data is processed locally in your browser. No data is sent to any server.
 - **Advanced Income Calculation**: Support for diverse income streams:
     - **Service Export Income**: Capped at **15%** tax rate.
-    - **Investment Income**: Fixed **10%** WHT/AIT.
+    - **Investment Income**: Fixed **10%** WHT/AIT. (Interest/ Dividend/ Fixed Deposits)
     - **Special Gains**: Flat **45%** tax for betting/gaming profits.
 - **👀 Live View Counter**: Real-time global visitor count powered by CounterAPI.
 - **🎨 Premium UI**: "Fluid Cyber Wealth" theme with glassmorphism and smooth animations.
