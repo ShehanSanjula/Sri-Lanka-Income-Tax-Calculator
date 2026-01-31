@@ -7,6 +7,7 @@ function App() {
   const [otherAllowances, setOtherAllowances] = useState('');
   const [exportIncome, setExportIncome] = useState('');
   const [investmentIncome, setInvestmentIncome] = useState('');
+  const [dividendIncome, setDividendIncome] = useState('');
   const [specialGains, setSpecialGains] = useState('');
   const [mode, setMode] = useState('monthly');
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -24,7 +25,9 @@ function App() {
     setFixedAllowances('');
     setOtherAllowances('');
     setExportIncome('');
+    setExportIncome('');
     setInvestmentIncome('');
+    setDividendIncome('');
     setSpecialGains('');
     setResult(null);
   };
@@ -56,18 +59,19 @@ function App() {
     const otherVal = cleanNumber(otherAllowances);
     const exportVal = cleanNumber(exportIncome);
     const investVal = cleanNumber(investmentIncome);
+    const dividendVal = cleanNumber(dividendIncome);
     const specialVal = cleanNumber(specialGains);
 
     const basicNum = parseInt(basicVal || '0', 10);
 
     if (basicNum > 0 && basicNum <= 1000) {
       setResult(null);
-    } else if (basicVal || fixedVal || otherVal || exportVal || investVal || specialVal) {
-      setResult(calculateTax(basicVal, fixedVal, otherVal, exportVal, investVal, specialVal, mode));
+    } else if (basicVal || fixedVal || otherVal || exportVal || investVal || dividendVal || specialVal) {
+      setResult(calculateTax(basicVal, fixedVal, otherVal, exportVal, investVal, dividendVal, specialVal, mode));
     } else {
       setResult(null);
     }
-  }, [basic, fixedAllowances, otherAllowances, exportIncome, investmentIncome, specialGains, mode]);
+  }, [basic, fixedAllowances, otherAllowances, exportIncome, investmentIncome, dividendIncome, specialGains, mode]);
 
   return (
     <div className="min-h-screen bg-[#022c22] text-emerald-100 font-sans selection:bg-emerald-500/30 overflow-x-hidden relative custom-scrollbar">
@@ -210,10 +214,21 @@ function App() {
                         value={investmentIncome}
                         onChange={setInvestmentIncome}
                         max={100000000000}
-                        placeholder="Interest/ Div/ FD"
+                        placeholder="Interest / Fixed Deposits"
                         suffix="LKR"
                         icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>}
                         subtext="10% WHT / AIT"
+                      />
+
+                      <FormattedInput
+                        label="Dividend Income"
+                        value={dividendIncome}
+                        onChange={setDividendIncome}
+                        max={100000000000}
+                        placeholder="Share Profits"
+                        suffix="LKR"
+                        icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>}
+                        subtext="Final WHT 15%"
                       />
 
                       <FormattedInput
@@ -303,13 +318,14 @@ function App() {
                       total={{ label: "Total Deductions", value: result.tax + result.epfEmployee + result.stampDuty }}
                     />
 
-                    {(result.breakdown.export > 0 || result.breakdown.investment > 0 || result.breakdown.special > 0) && (
+                    {(result.breakdown.export > 0 || result.breakdown.investment > 0 || result.breakdown.dividend > 0 || result.breakdown.special > 0) && (
                       <DetailCard
                         title="Tax Components"
                         items={[
                           { label: "Standard Tax", value: result.breakdown.standard, color: "text-red-200" },
                           ...(result.breakdown.export > 0 ? [{ label: "Export Income Tax (15% Cap)", value: result.breakdown.export, color: "text-amber-200" }] : []),
                           ...(result.breakdown.investment > 0 ? [{ label: "Investment Income Tax (10%)", value: result.breakdown.investment, color: "text-blue-200" }] : []),
+                          ...(result.breakdown.dividend > 0 ? [{ label: "Dividend Income Tax (15%)", value: result.breakdown.dividend, color: "text-blue-200" }] : []),
                           ...(result.breakdown.special > 0 ? [{ label: "Special Gains Tax (45%)", value: result.breakdown.special, color: "text-purple-200" }] : [])
                         ]}
                         total={{ label: "Total Tax", value: result.tax }}

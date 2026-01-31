@@ -19,6 +19,7 @@ export const TAX_BRACKETS = [
 export const ANNUAL_RELIEF = 1800000; // 150,000 monthly
 export const EXPORT_INCOME_CAP_RATE = 0.15;
 export const INVESTMENT_TAX_RATE = 0.10;
+export const DIVIDEND_TAX_RATE = 0.15;
 export const SPECIAL_GAINS_RATE = 0.45;
 
 export const formatCurrency = (amount) => {
@@ -53,7 +54,7 @@ export const formatViewCount = (number) => {
     return number.toString();
 };
 
-export const calculateTax = (basicSalary, fixedAllowances, otherAllowances, exportIncomeInput, investmentIncomeInput, specialGainsInput, mode = 'monthly') => {
+export const calculateTax = (basicSalary, fixedAllowances, otherAllowances, exportIncomeInput, investmentIncomeInput, dividendIncomeInput, specialGainsInput, mode = 'monthly') => {
     const isMonthly = mode === 'monthly';
     const multiplier = isMonthly ? 12 : 1;
 
@@ -65,6 +66,7 @@ export const calculateTax = (basicSalary, fixedAllowances, otherAllowances, expo
     // New Categories
     const exportIncome = (parseFloat(exportIncomeInput) || 0);
     const investmentIncome = (parseFloat(investmentIncomeInput) || 0);
+    const dividendIncome = (parseFloat(dividendIncomeInput) || 0);
     const specialGains = (parseFloat(specialGainsInput) || 0);
 
     const totalStandardEarnings = basic + fixed + other;
@@ -232,11 +234,15 @@ export const calculateTax = (basicSalary, fixedAllowances, otherAllowances, expo
     const annualInvestmentParams = investmentIncome * multiplier;
     const investmentTax = annualInvestmentParams * INVESTMENT_TAX_RATE;
 
-    // --- Step 4: Special Gains (45%) ---
+    // --- Step 4: Dividend Income (WHT 15%) ---
+    const annualDividendParams = dividendIncome * multiplier;
+    const dividendTax = annualDividendParams * DIVIDEND_TAX_RATE;
+
+    // --- Step 5: Special Gains (45%) ---
     const annualSpecialParams = specialGains * multiplier;
     const specialTax = annualSpecialParams * SPECIAL_GAINS_RATE;
 
-    const totalTaxAnnual = standardTax + exportTax + investmentTax + specialTax;
+    const totalTaxAnnual = standardTax + exportTax + investmentTax + dividendTax + specialTax;
 
     // --- Convert back to Monthly if needed ---
     // Logic: The function calculates "Tax per month" if mode is monthly.
@@ -247,10 +253,11 @@ export const calculateTax = (basicSalary, fixedAllowances, otherAllowances, expo
     const finalStandardTax = isMonthly ? standardTax / 12 : standardTax;
     const finalExportTax = isMonthly ? exportTax / 12 : exportTax;
     const finalInvestmentTax = isMonthly ? investmentTax / 12 : investmentTax;
+    const finalDividendTax = isMonthly ? dividendTax / 12 : dividendTax;
     const finalSpecialTax = isMonthly ? specialTax / 12 : specialTax;
 
     // Total Earnings used for display
-    const totalEarningsDisplay = totalStandardEarnings + exportIncome + investmentIncome + specialGains;
+    const totalEarningsDisplay = totalStandardEarnings + exportIncome + investmentIncome + dividendIncome + specialGains;
 
     // Stamp Duty (on Receipt of Salary)
     // Roughly applies to Net Payments > 25,000. 
@@ -275,6 +282,7 @@ export const calculateTax = (basicSalary, fixedAllowances, otherAllowances, expo
             standard: finalStandardTax,
             export: finalExportTax,
             investment: finalInvestmentTax,
+            dividend: finalDividendTax,
             special: finalSpecialTax
         },
         netSalary: netSalary,
