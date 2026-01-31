@@ -1,5 +1,11 @@
 # Release Notes
 
+## [v1.4.1] - 2026-01-31
+
+### ⚡ Improvements
+
+- **UI Polish**: Shortened "Interest / Fixed Deposits" placeholder to **"Interest/ FD"** for better mobile visibility.
+
 ## [v1.4.0] - 2026-01-31
 
 ### 🚀 New Features
