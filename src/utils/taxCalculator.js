@@ -66,7 +66,7 @@ export const formatViewCount = (number) => {
     return number.toString();
 };
 
-export const calculateTax = (basicSalary, fixedAllowances, otherAllowances, exportIncomeInput, investmentIncomeInput, dividendIncomeInput, specialGainsInput, mode = 'monthly', isIndependentServiceProvider = false) => {
+export const calculateTax = (basicSalary, fixedAllowances, otherAllowances, exportIncomeInput, investmentIncomeInput, dividendIncomeInput, specialGainsInput, mode = 'monthly', professionType = 'salaried') => {
     const isMonthly = mode === 'monthly';
     const multiplier = isMonthly ? 12 : 1;
 
@@ -257,7 +257,7 @@ export const calculateTax = (basicSalary, fixedAllowances, otherAllowances, expo
     // --- Step 6: Advance Income Tax (AIT 5% for independent service providers) ---
     const annualOther = other * multiplier;
     const annualAitThreshold = MONTHLY_AIT_THRESHOLD * 12;
-    const annualAit = (isIndependentServiceProvider && annualOther > annualAitThreshold) ? (annualOther * AIT_TAX_RATE) : 0;
+    const annualAit = (professionType === 'independent' && annualOther > annualAitThreshold) ? (annualOther * AIT_TAX_RATE) : 0;
 
     const totalTaxAnnual = standardTax + exportTax + investmentTax + dividendTax + specialTax + annualAit;
 

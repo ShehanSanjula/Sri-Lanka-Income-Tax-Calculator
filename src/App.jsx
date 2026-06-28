@@ -13,9 +13,9 @@ function App() {
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [result, setResult] = useState(null);
   const [viewCount, setViewCount] = useState(null); // Initialize as null for loading state
-  const [profile, setProfile] = useState('standard');
+  const [professionType, setProfessionType] = useState('salaried');
 
-  const isExempt = profile === 'standard' && (parseFloat(cleanNumber(otherAllowances)) || 0) === 0;
+  const isExempt = professionType === 'salaried' && (parseFloat(cleanNumber(otherAllowances)) || 0) === 0;
 
   // Helper to remove commas for calculation
   const cleanNumber = (val) => val.replace(/,/g, '');
@@ -70,11 +70,11 @@ function App() {
     if (basicNum > 0 && basicNum <= 1000) {
       setResult(null);
     } else if (basicVal || fixedVal || otherVal || exportVal || investVal || dividendVal || specialVal) {
-      setResult(calculateTax(basicVal, fixedVal, otherVal, exportVal, investVal, dividendVal, specialVal, mode, profile === 'independent'));
+      setResult(calculateTax(basicVal, fixedVal, otherVal, exportVal, investVal, dividendVal, specialVal, mode, professionType));
     } else {
       setResult(null);
     }
-  }, [basic, fixedAllowances, otherAllowances, exportIncome, investmentIncome, dividendIncome, specialGains, mode, profile]);
+  }, [basic, fixedAllowances, otherAllowances, exportIncome, investmentIncome, dividendIncome, specialGains, mode, professionType]);
 
   return (
     <div className="min-h-screen bg-[#022c22] text-emerald-100 font-sans selection:bg-emerald-500/30 overflow-x-hidden relative custom-scrollbar">
@@ -148,7 +148,7 @@ function App() {
               <div className="flex-1">
                 <h4 className="text-sm font-bold text-white mb-0.5">Compliance Active</h4>
                 <p className="text-xs text-emerald-200/80 leading-relaxed">
-                  Compliance Note: Under the June 2026 Amendment Act, you are exempt from filing an annual tax return if your income is fully covered under APIT.
+                  🎉 2026 Compliance Note: Under the June 2026 Amendment Act, you are legally exempt from maintaining a tax file or filing an annual income tax return if your only earnings are covered entirely by APIT.
                 </p>
               </div>
             </div>
@@ -179,11 +179,11 @@ function App() {
                         </svg>
                       </div>
                       <select
-                        value={profile}
-                        onChange={(e) => setProfile(e.target.value)}
+                        value={professionType}
+                        onChange={(e) => setProfessionType(e.target.value)}
                         className="w-full bg-[#064e3b]/30 border border-emerald-500/20 text-white rounded-xl py-3.5 pl-12 pr-10 outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500/50 transition-all font-sans text-sm appearance-none cursor-pointer shadow-inner"
                       >
-                        <option value="standard" className="bg-[#022c22] text-white">Standard Salaried Employee</option>
+                        <option value="salaried" className="bg-[#022c22] text-white">Standard Salaried Employee</option>
                         <option value="independent" className="bg-[#022c22] text-white">Independent Creative / Service Provider</option>
                       </select>
                       <div className="absolute right-4 pointer-events-none text-emerald-500/50">
@@ -226,7 +226,7 @@ function App() {
                       suffix="LKR"
                       icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>}
                       subtext="Taxable Only"
-                      tooltip="Note: Under Section 52A (Effective June 2026), do not include lump sums received from life insurance maturity, surrender, or death payouts, as they are fully tax-exempt."
+                      tooltip="Note: Under Section 52A, do not include lump sums received from life insurance policy maturity, surrender, or death payouts, as they are completely tax-exempt."
                     />
 
                     <div className="h-px bg-emerald-500/10 my-2"></div>
