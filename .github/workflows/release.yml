@@ -21,5 +21,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           body_path: latest_release_notes.md
+          name: "${{ github.ref_name }} - Sri Lanka Tax Calculator"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
