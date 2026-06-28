@@ -13,6 +13,8 @@ A premium, privacy-focused, and fully responsive Income Tax Calculator for Sri L
 
 - **🚀 Instant Calculation**: Real-time updates as you type.
 - **🔒 Privacy First**: All data is processed locally in your browser. No data is sent to any server.
+- **⚖️ 2026 Compliance Upgrades**: Built-in support for the Inland Revenue (Amendment) Act No. 11 of 2026, including freelancer AIT deductions and APIT filing exemption banners.
+- **🛡️ Profile-Specific Safeties**: Toggle between Salaried and Independent profiles. Corporate salary fields lock and clear automatically for freelancers to avoid skewing simulations.
 - **Advanced Income Calculation**: Support for diverse income streams:
   - **Service Export Income**: Capped at **15%** tax rate.
   - **Investment Income**: Fixed **10%** WHT/AIT (Interest/Fixed Deposits).
@@ -20,12 +22,13 @@ A premium, privacy-focused, and fully responsive Income Tax Calculator for Sri L
   - **Special Gains**: Flat **45%** tax for betting/gaming profits.
 - **👀 Live View Counter**: Real-time global visitor count powered by CounterAPI.
 - **🎨 Premium UI**: "Fluid Cyber Wealth" theme with glassmorphism and smooth animations.
-- **📱 Smart Formatting**: Handles large numbers (Millions/Billions) gracefully without breaking the layout.
+- **📱 Smart Formatting**: Handles large numbers (Millions/Billions) gracefully and updates placeholders dynamically based on Monthly/Annual selections.
 - **📊 Visual Breakdown**: Interactive Donut Chart for visualizing salary distribution.
 - **📋 Detailed Reports**:
   - **APIT (Tax)** calculation based on official 5-tier tax slabs.
+  - **Freelancer AIT**: 5% Advance Income Tax (AIT) computation.
   - **EPF/ETF** computations for both employee and employer.
-  - **Stamp Duty** logic (New for 2025).
+  - **Stamp Duty** logic.
   - **Total Deductions** & **Cost to Company**.
 
 ## 🛠️ Technology Stack
@@ -66,7 +69,7 @@ A premium, privacy-focused, and fully responsive Income Tax Calculator for Sri L
 
 ## 📜 Tax Logic (Y/A 2025/2026)
 
-Based on the **Inland Revenue (Amendment) Act No. 02 of 2025**:
+Based on the **Inland Revenue (Amendment) Act No. 02 of 2025** and the **Inland Revenue (Amendment) Act No. 11 of 2026**:
 
 ### Standard Employment Income
 
@@ -78,9 +81,12 @@ Based on the **Inland Revenue (Amendment) Act No. 02 of 2025**:
   - Next Rs. 500,000: **24%**
   - Next Rs. 500,000: **30%**
   - Balance: **36%**
+- **APIT Tax Filing Exemption**: Salaried employees whose only income is salary subject to APIT generally do not need to maintain an income tax file or file a return (the relief also covers up to Rs. 5,000 in interest income).
 
-### Advanced Categories
+### Advanced Categories & Compliance Updates
 
+- **Independent Creatives / Freelancers**: A **5% Advance Income Tax (AIT)** applies to gross monthly earnings exceeding **Rs. 100,000** (Rs. 1,200,000 annually) for independent service providers.
+- **Section 52A Exemption**: Lump sums received from life insurance policy maturity, surrender, or death payouts are completely tax-exempt and should be omitted from calculations.
 - **Service Export Income**: Taxed at progressive rates but **capped at 15%**.
 - **Investment Income**: Flat rate of **10%** (Interest / Fixed Deposits).
 - **Dividend Income**: Flat rate of **15%**.
