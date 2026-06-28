@@ -6,6 +6,7 @@
 
 - **UX Safeguards**: Locked "Basic Salary" and "Fixed Allowances" fields when switching to the Independent Creative / Service Provider profile, setting their subtexts dynamically to "Not applicable for independent profile".
 - **Auto-Clear State**: Switching profiles to Independent Creative automatically clears existing values from the Basic Salary and Fixed Allowances state to prevent leftover corporate salary data from skewing independent contractor calculations.
+- **Dynamic Placeholders**: Scale numeric field placeholders (Basic Salary, Fixed Allowances, Other Income) dynamically based on the selected mode (e.g., LKR 150,000 monthly vs. LKR 1,800,000 annual for Basic Salary).
 
 ## [v1.5] - 2026-06-28
 
