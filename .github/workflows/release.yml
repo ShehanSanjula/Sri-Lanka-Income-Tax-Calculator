@@ -14,9 +14,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       
+      - name: Extract Release Notes
+        run: awk '/^## / {if (count++) exit} {if (count) print}' RELEASE_NOTES.md > latest_release_notes.md
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          body_path: RELEASE_NOTES.md
+          body_path: latest_release_notes.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
