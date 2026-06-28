@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { calculateTax, formatCurrency, formatCompactNumber, formatViewCount } from './utils/taxCalculator';
 
 function App() {
+  // Helper to remove commas for calculation
+  const cleanNumber = (val) => val.replace(/,/g, '');
+
   const [basic, setBasic] = useState('');
   const [fixedAllowances, setFixedAllowances] = useState('');
   const [otherAllowances, setOtherAllowances] = useState('');
@@ -16,9 +19,6 @@ function App() {
   const [professionType, setProfessionType] = useState('salaried');
 
   const isExempt = professionType === 'salaried' && (parseFloat(cleanNumber(otherAllowances)) || 0) === 0;
-
-  // Helper to remove commas for calculation
-  const cleanNumber = (val) => val.replace(/,/g, '');
 
   const handleModeChange = (newMode) => {
     if (newMode === mode) return;
