@@ -148,7 +148,7 @@ function App() {
               <div className="flex-1">
                 <h4 className="text-sm font-bold text-white mb-0.5">Compliance Active</h4>
                 <p className="text-xs text-emerald-200/80 leading-relaxed">
-                  🎉 2026 Compliance Note: Under the June 2026 Amendment Act, you are legally exempt from maintaining a tax file or filing an annual income tax return if your only earnings are covered entirely by APIT.
+                  🎉 2026 Compliance Note: Under the June 2026 amendment, employees whose only income is salary fully subject to APIT generally do not need to maintain an income tax file or file a return, and the relief also covers up to Rs. 5,000 interest income.
                 </p>
               </div>
             </div>

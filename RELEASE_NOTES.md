@@ -1,5 +1,11 @@
 # Release Notes
 
+## [v1.7] - 2026-06-28
+
+### ⚖️ Legal & Compliance Updates
+
+- **Exemption Disclaimer Update**: Clarified the compliance alert banner to explicitly mention the June 2026 amendment guidelines, indicating that salaried employees under APIT generally do not need to maintain an income tax file or file a return, and that this relief extends to up to Rs. 5,000 in interest income.
+
 ## [v1.6] - 2026-06-28
 
 ### ⚙️ Improvements
