@@ -180,7 +180,14 @@ function App() {
                       </div>
                       <select
                         value={professionType}
-                        onChange={(e) => setProfessionType(e.target.value)}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setProfessionType(val);
+                          if (val === 'independent') {
+                            setBasic('');
+                            setFixedAllowances('');
+                          }
+                        }}
                         className="w-full bg-[#064e3b]/30 border border-emerald-500/20 text-white rounded-xl py-3.5 pl-12 pr-10 outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500/50 transition-all font-sans text-sm appearance-none cursor-pointer shadow-inner"
                       >
                         <option value="salaried" className="bg-[#022c22] text-white">Standard Salaried Employee</option>
@@ -196,7 +203,6 @@ function App() {
 
                   <div className="space-y-5">
                     <p className="text-[10px] uppercase tracking-widest text-amber-500/70 font-bold">Employment Income</p>
-
                     <FormattedInput
                       label="Basic Salary"
                       value={basic}
@@ -205,7 +211,8 @@ function App() {
                       placeholder="150,000"
                       suffix="LKR"
                       icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" /></svg>}
-                      subtext="Subject to EPF/ETF"
+                      subtext={professionType === "independent" ? "Not applicable for independent profile" : "Subject to EPF/ETF"}
+                      disabled={professionType === "independent"}
                     />
                     <FormattedInput
                       label="Fixed Allowances"
@@ -215,7 +222,8 @@ function App() {
                       placeholder="25,000"
                       suffix="LKR"
                       icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>}
-                      subtext="Subject to EPF/ETF"
+                      subtext={professionType === "independent" ? "Not applicable for independent profile" : "Subject to EPF/ETF"}
+                      disabled={professionType === "independent"}
                     />
                     <FormattedInput
                       label="Other Income"
@@ -500,7 +508,7 @@ function App() {
 }
 
 // Sub-components
-const FormattedInput = ({ label, value, onChange, placeholder, suffix, icon, subtext, max, tooltip }) => {
+const FormattedInput = ({ label, value, onChange, placeholder, suffix, icon, subtext, max, tooltip, disabled }) => {
   // Format number with commas
   const formatNumber = (val) => {
     if (!val) return '';
@@ -519,7 +527,7 @@ const FormattedInput = ({ label, value, onChange, placeholder, suffix, icon, sub
   };
 
   return (
-    <div className="group relative">
+    <div className={`group relative ${disabled ? 'opacity-40 cursor-not-allowed' : ''}`}>
       <div className="flex items-center gap-1.5 mb-2">
         <label className="text-xs font-bold text-emerald-200 uppercase tracking-widest block group-focus-within:text-amber-400 transition-colors">{label}</label>
         {tooltip && (
@@ -545,7 +553,8 @@ const FormattedInput = ({ label, value, onChange, placeholder, suffix, icon, sub
           value={value}
           onChange={handleChange}
           placeholder={placeholder}
-          className="w-full bg-[#064e3b]/30 border border-emerald-500/20 text-white rounded-xl py-3.5 pl-12 pr-12 outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500/50 transition-all font-mono text-lg placeholder:text-emerald-800 shadow-inner"
+          disabled={disabled}
+          className="w-full bg-[#064e3b]/30 border border-emerald-500/20 text-white rounded-xl py-3.5 pl-12 pr-12 outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500/50 transition-all font-mono text-lg placeholder:text-emerald-800 shadow-inner disabled:opacity-40 disabled:cursor-not-allowed disabled:bg-emerald-950/20"
         />
         <span className="absolute right-0 top-0 h-full flex items-center pr-4 pointer-events-none">
           <span className="text-xs text-emerald-600 font-medium tracking-wider">{suffix}</span>
