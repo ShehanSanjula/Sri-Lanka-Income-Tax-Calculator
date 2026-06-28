@@ -436,8 +436,8 @@ function App() {
             <div className="grid md:grid-cols-2 gap-8">
               <div className="space-y-6">
                 <NoteBlock title="Legislative Authority">
-                  <p>Based on the <strong>Inland Revenue (Amendment) Act No. 02 of 2025</strong>. New individual income tax rates effective from April 01, 2025.</p>
-                  <p className="mt-2 text-xs text-emerald-300">Includes provisions for Service Export (15% cap), Investment Income (10%), and Special Gains (45%).</p>
+                  <p>Based on the <strong>Inland Revenue (Amendment) Act No. 02 of 2025</strong> and the <strong>Inland Revenue (Amendment) Act No. 11 of 2026</strong>. Tax rules and rates are fully compliant with the latest June 2026 compliance updates.</p>
+                  <p className="mt-2 text-xs text-emerald-300">Includes provisions for APIT salaried filing exemptions, 5% freelancer Advance Income Tax (AIT) over Rs. 100,000/month, and the Section 52A life insurance exemptions.</p>
                 </NoteBlock>
                 <NoteBlock title="Relief Structure">
                   <p>Annual Tax Free Threshold: <strong>Rs. 1,800,000</strong></p>
