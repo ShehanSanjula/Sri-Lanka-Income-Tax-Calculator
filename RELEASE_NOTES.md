@@ -1,5 +1,15 @@
 # Release Notes
 
+## [v1.5] - 2026-06-28
+
+### 🚀 New Features
+
+- **2026 Compliance Upgrades**: Fully updated to match the Inland Revenue (Amendment) Act No. 11 of 2026 guidelines.
+- **Income Source Profile Selector**: Choose between **Standard Salaried Employee** and **Independent Creative / Service Provider** tax profiles.
+- **Advance Income Tax (AIT) calculation**: Automatically applies a 5% AIT withholding/deduction on "Other Income" for Independent Service Providers when it exceeds LKR 100,000 per month (or LKR 1,200,000 annually).
+- **Tax Return Exemption Banner**: Dynamic banner notifying standard salaried employees with no other income that they are exempt from filing annual tax returns under the 2026 Amendment Act.
+- **Section 52A Tooltip**: Helpful compliance indicator next to other income input, reminding users that maturity, surrender, or death payouts from life insurance policies are fully tax-exempt under Section 52A (Effective June 2026).
+
 ## [v1.4] - 2026-01-31
 
 ### 🚀 New Features

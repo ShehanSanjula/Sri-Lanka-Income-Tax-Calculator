@@ -13,6 +13,9 @@ function App() {
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [result, setResult] = useState(null);
   const [viewCount, setViewCount] = useState(null); // Initialize as null for loading state
+  const [professionType, setProfessionType] = useState('salaried');
+
+  const isExempt = professionType === 'salaried' && (parseFloat(cleanNumber(otherAllowances)) || 0) === 0;
 
   // Helper to remove commas for calculation
   const cleanNumber = (val) => val.replace(/,/g, '');
@@ -67,11 +70,11 @@ function App() {
     if (basicNum > 0 && basicNum <= 1000) {
       setResult(null);
     } else if (basicVal || fixedVal || otherVal || exportVal || investVal || dividendVal || specialVal) {
-      setResult(calculateTax(basicVal, fixedVal, otherVal, exportVal, investVal, dividendVal, specialVal, mode));
+      setResult(calculateTax(basicVal, fixedVal, otherVal, exportVal, investVal, dividendVal, specialVal, mode, professionType));
     } else {
       setResult(null);
     }
-  }, [basic, fixedAllowances, otherAllowances, exportIncome, investmentIncome, dividendIncome, specialGains, mode]);
+  }, [basic, fixedAllowances, otherAllowances, exportIncome, investmentIncome, dividendIncome, specialGains, mode, professionType]);
 
   return (
     <div className="min-h-screen bg-[#022c22] text-emerald-100 font-sans selection:bg-emerald-500/30 overflow-x-hidden relative custom-scrollbar">
@@ -132,7 +135,24 @@ function App() {
         </nav>
 
         {/* Main Content */}
-        <main className="flex-grow w-full max-w-[90rem] mx-auto px-4 py-8 md:py-12 space-y-12">
+        <main className="flex-grow w-full max-w-[90rem] mx-auto px-4 py-8 md:py-12 space-y-8">
+
+          {/* Compliance Banner */}
+          {isExempt && (
+            <div className="glass-card p-5 rounded-2xl border border-emerald-500/30 bg-[#064e3b]/30 backdrop-blur-xl flex items-start gap-4 shadow-lg shadow-emerald-950/20 max-w-5xl mx-auto animate-fade-in-right">
+              <div className="p-2.5 bg-emerald-500/10 rounded-full text-emerald-400 flex-shrink-0">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div className="flex-1">
+                <h4 className="text-sm font-bold text-white mb-0.5">Compliance Active</h4>
+                <p className="text-xs text-emerald-200/80 leading-relaxed">
+                  🎉 2026 Compliance Note: Under the June 2026 Amendment Act, you are legally exempt from maintaining a tax file or filing an annual income tax return if your only earnings are covered entirely by APIT.
+                </p>
+              </div>
+            </div>
+          )}
 
           {/* Calculator Section */}
           <div className="grid lg:grid-cols-12 gap-6 items-start">
@@ -147,6 +167,31 @@ function App() {
                   <div className="bg-[#064e3b]/40 p-1.5 rounded-xl inline-flex w-full border border-amber-500/10">
                     <button onClick={() => handleModeChange('monthly')} className={`flex-1 py-2 rounded-lg text-xs font-semibold transition-all duration-300 ${mode === 'monthly' ? 'bg-[#065f46] text-white shadow-lg shadow-black/20 ring-1 ring-white/10' : 'text-emerald-200/60 hover:text-emerald-100'}`}>Monthly</button>
                     <button onClick={() => handleModeChange('annual')} className={`flex-1 py-2 rounded-lg text-xs font-semibold transition-all duration-300 ${mode === 'annual' ? 'bg-[#065f46] text-white shadow-lg shadow-black/20 ring-1 ring-white/10' : 'text-emerald-200/60 hover:text-emerald-100'}`}>Annual</button>
+                  </div>
+
+                  {/* Profile Dropdown Selector */}
+                  <div className="group relative">
+                    <label className="text-xs font-bold text-emerald-200 uppercase tracking-widest mb-2 block group-focus-within:text-amber-400 transition-colors">Income Source Profile</label>
+                    <div className="relative flex items-center">
+                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-emerald-500/50 group-focus-within:text-amber-500 transition-colors">
+                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                      </div>
+                      <select
+                        value={professionType}
+                        onChange={(e) => setProfessionType(e.target.value)}
+                        className="w-full bg-[#064e3b]/30 border border-emerald-500/20 text-white rounded-xl py-3.5 pl-12 pr-10 outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500/50 transition-all font-sans text-sm appearance-none cursor-pointer shadow-inner"
+                      >
+                        <option value="salaried" className="bg-[#022c22] text-white">Standard Salaried Employee</option>
+                        <option value="independent" className="bg-[#022c22] text-white">Independent Creative / Service Provider</option>
+                      </select>
+                      <div className="absolute right-4 pointer-events-none text-emerald-500/50">
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
+                    </div>
                   </div>
 
                   <div className="space-y-5">
@@ -181,6 +226,7 @@ function App() {
                       suffix="LKR"
                       icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>}
                       subtext="Taxable Only"
+                      tooltip="Note: Under Section 52A, do not include lump sums received from life insurance policy maturity, surrender, or death payouts, as they are completely tax-exempt."
                     />
 
                     <div className="h-px bg-emerald-500/10 my-2"></div>
@@ -318,7 +364,7 @@ function App() {
                       total={{ label: "Total Deductions", value: result.tax + result.epfEmployee + result.stampDuty }}
                     />
 
-                    {(result.breakdown.export > 0 || result.breakdown.investment > 0 || result.breakdown.dividend > 0 || result.breakdown.special > 0) && (
+                    {(result.breakdown.export > 0 || result.breakdown.investment > 0 || result.breakdown.dividend > 0 || result.breakdown.special > 0 || result.breakdown.ait > 0) && (
                       <DetailCard
                         title="Tax Components"
                         items={[
@@ -326,7 +372,8 @@ function App() {
                           ...(result.breakdown.export > 0 ? [{ label: "Export Income Tax (15% Cap)", value: result.breakdown.export, color: "text-amber-200" }] : []),
                           ...(result.breakdown.investment > 0 ? [{ label: "Investment Income Tax (10%)", value: result.breakdown.investment, color: "text-blue-200" }] : []),
                           ...(result.breakdown.dividend > 0 ? [{ label: "Dividend Income Tax (15%)", value: result.breakdown.dividend, color: "text-blue-200" }] : []),
-                          ...(result.breakdown.special > 0 ? [{ label: "Special Gains Tax (45%)", value: result.breakdown.special, color: "text-purple-200" }] : [])
+                          ...(result.breakdown.special > 0 ? [{ label: "Special Gains Tax (45%)", value: result.breakdown.special, color: "text-purple-200" }] : []),
+                          ...(result.breakdown.ait > 0 ? [{ label: "Advance Income Tax (5% AIT)", value: result.breakdown.ait, color: "text-orange-200" }] : [])
                         ]}
                         total={{ label: "Total Tax", value: result.tax }}
                       />
@@ -453,7 +500,7 @@ function App() {
 }
 
 // Sub-components
-const FormattedInput = ({ label, value, onChange, placeholder, suffix, icon, subtext, max }) => {
+const FormattedInput = ({ label, value, onChange, placeholder, suffix, icon, subtext, max, tooltip }) => {
   // Format number with commas
   const formatNumber = (val) => {
     if (!val) return '';
@@ -473,7 +520,22 @@ const FormattedInput = ({ label, value, onChange, placeholder, suffix, icon, sub
 
   return (
     <div className="group relative">
-      <label className="text-xs font-bold text-emerald-200 uppercase tracking-widest mb-2 block group-focus-within:text-amber-400 transition-colors">{label}</label>
+      <div className="flex items-center gap-1.5 mb-2">
+        <label className="text-xs font-bold text-emerald-200 uppercase tracking-widest block group-focus-within:text-amber-400 transition-colors">{label}</label>
+        {tooltip && (
+          <div className="relative group/tooltip">
+            <button type="button" className="text-emerald-500/70 hover:text-amber-400 transition-colors focus:outline-none" aria-label="Information">
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </button>
+            <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-64 p-3 bg-[#022c22] border border-amber-500/30 text-emerald-100 text-[11px] rounded-lg shadow-xl opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all duration-200 z-50 pointer-events-none font-sans font-normal normal-case tracking-normal">
+              {tooltip}
+              <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-t-[#022c22]"></div>
+            </div>
+          </div>
+        )}
+      </div>
       <div className="relative flex items-center">
         <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-emerald-500/50 group-focus-within:text-amber-500 transition-colors">
           {icon}

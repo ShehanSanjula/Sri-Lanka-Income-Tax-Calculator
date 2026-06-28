@@ -21,6 +21,18 @@ export const EXPORT_INCOME_CAP_RATE = 0.15;
 export const INVESTMENT_TAX_RATE = 0.10;
 export const DIVIDEND_TAX_RATE = 0.15;
 export const SPECIAL_GAINS_RATE = 0.45;
+export const AIT_TAX_RATE = 0.05;
+export const MONTHLY_AIT_THRESHOLD = 100000;
+
+export const calculateAit = (otherIncome, mode = 'monthly') => {
+    const isMonthly = mode === 'monthly';
+    const threshold = isMonthly ? MONTHLY_AIT_THRESHOLD : MONTHLY_AIT_THRESHOLD * 12;
+    const income = parseFloat(otherIncome) || 0;
+    if (income > threshold) {
+        return income * AIT_TAX_RATE;
+    }
+    return 0;
+};
 
 export const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-LK', {
@@ -54,7 +66,7 @@ export const formatViewCount = (number) => {
     return number.toString();
 };
 
-export const calculateTax = (basicSalary, fixedAllowances, otherAllowances, exportIncomeInput, investmentIncomeInput, dividendIncomeInput, specialGainsInput, mode = 'monthly') => {
+export const calculateTax = (basicSalary, fixedAllowances, otherAllowances, exportIncomeInput, investmentIncomeInput, dividendIncomeInput, specialGainsInput, mode = 'monthly', professionType = 'salaried') => {
     const isMonthly = mode === 'monthly';
     const multiplier = isMonthly ? 12 : 1;
 
@@ -242,7 +254,12 @@ export const calculateTax = (basicSalary, fixedAllowances, otherAllowances, expo
     const annualSpecialParams = specialGains * multiplier;
     const specialTax = annualSpecialParams * SPECIAL_GAINS_RATE;
 
-    const totalTaxAnnual = standardTax + exportTax + investmentTax + dividendTax + specialTax;
+    // --- Step 6: Advance Income Tax (AIT 5% for independent service providers) ---
+    const annualOther = other * multiplier;
+    const annualAitThreshold = MONTHLY_AIT_THRESHOLD * 12;
+    const annualAit = (professionType === 'independent' && annualOther > annualAitThreshold) ? (annualOther * AIT_TAX_RATE) : 0;
+
+    const totalTaxAnnual = standardTax + exportTax + investmentTax + dividendTax + specialTax + annualAit;
 
     // --- Convert back to Monthly if needed ---
     // Logic: The function calculates "Tax per month" if mode is monthly.
@@ -255,6 +272,7 @@ export const calculateTax = (basicSalary, fixedAllowances, otherAllowances, expo
     const finalInvestmentTax = isMonthly ? investmentTax / 12 : investmentTax;
     const finalDividendTax = isMonthly ? dividendTax / 12 : dividendTax;
     const finalSpecialTax = isMonthly ? specialTax / 12 : specialTax;
+    const finalAit = isMonthly ? annualAit / 12 : annualAit;
 
     // Total Earnings used for display
     const totalEarningsDisplay = totalStandardEarnings + exportIncome + investmentIncome + dividendIncome + specialGains;
@@ -283,7 +301,8 @@ export const calculateTax = (basicSalary, fixedAllowances, otherAllowances, expo
             export: finalExportTax,
             investment: finalInvestmentTax,
             dividend: finalDividendTax,
-            special: finalSpecialTax
+            special: finalSpecialTax,
+            ait: finalAit
         },
         netSalary: netSalary,
         epfEmployee: epfEmployee, // Already scaled
