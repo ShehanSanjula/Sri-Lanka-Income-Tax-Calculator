@@ -40,7 +40,7 @@ function App() {
     // Using shehansanjula-tax-calc namespace to ensure uniqueness
     const fetchViews = async () => {
       try {
-        const response = await fetch('https://abacus.jasoncameron.dev/hit/shehansanjula.github.io/tax-calc');
+        const response = await fetch('https://abacus.jasoncameron.dev/hit/shehansanjula-tax-calc/visits');
         if (response.ok) {
           const data = await response.json();
           setViewCount(data.value);
