@@ -1,5 +1,11 @@
 # Release Notes
 
+## [v1.7.1] - 2026-08-08
+
+### 🐛 Bug Fixes
+
+- **View Counter**: Migrated from deprecated CounterAPI (v1) to Abacus API to restore the live view counter functionality in the header.
+
 ## [v1.7] - 2026-06-28
 
 ### ⚖️ Legal & Compliance Updates
