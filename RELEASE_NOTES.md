@@ -1,5 +1,11 @@
 # Release Notes
 
+## [v1.8] - 2026-08-08
+
+### 🎨 UI & UX Improvements
+
+- **Cleaner Desktop Layout**: The "Advanced Income Sources" section is now neatly tucked away in an expandable accordion across all devices (mobile and desktop). This provides a much cleaner and less intimidating first impression for standard salaried users, while keeping advanced features easily accessible.
+
 ## [v1.7.1] - 2026-08-08
 
 ### 🐛 Bug Fixes
