@@ -6,6 +6,11 @@
 
 - **View Counter**: Migrated from deprecated CounterAPI (v1) to Abacus API to restore the live view counter functionality in the header.
 
+### ✨ Enhancements
+
+- **View Counter Hover**: The view counter badge now displays the exact hit count (e.g., "Total Views: 2,500") using a native tooltip when hovered.
+- **Documentation**: Updated the README to accurately reflect the new Abacus API infrastructure.
+
 ## [v1.7] - 2026-06-28
 
 ### ⚖️ Legal & Compliance Updates
