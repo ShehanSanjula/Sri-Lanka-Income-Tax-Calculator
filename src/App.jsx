@@ -242,7 +242,7 @@ function App() {
                       <p className="text-[10px] uppercase tracking-widest text-amber-500/70 font-bold">Advanced Income Sources</p>
                       <button
                         onClick={() => setShowAdvanced(!showAdvanced)}
-                        className="md:hidden flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-900/40 border border-emerald-500/20 text-[10px] font-bold text-emerald-400 hover:bg-emerald-900/60 hover:text-emerald-300 transition-all"
+                        className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-900/40 border border-emerald-500/20 text-[10px] font-bold text-emerald-400 hover:bg-emerald-900/60 hover:text-emerald-300 transition-all"
                       >
                         <span>{showAdvanced ? 'Hide' : 'Show'}</span>
                         <svg className={`w-3 h-3 transition-transform ${showAdvanced ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -251,7 +251,7 @@ function App() {
                       </button>
                     </div>
 
-                    <div className={`${showAdvanced ? 'block' : 'hidden'} md:block space-y-5`}>
+                    <div className={`${showAdvanced ? 'block' : 'hidden'} space-y-5`}>
                       <FormattedInput
                         label="Service Export Income"
                         value={exportIncome}
