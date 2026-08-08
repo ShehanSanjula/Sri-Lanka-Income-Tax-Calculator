@@ -20,7 +20,7 @@ A premium, privacy-focused, and fully responsive Income Tax Calculator for Sri L
   - **Investment Income**: Fixed **10%** WHT/AIT (Interest/Fixed Deposits).
   - **Dividend Income**: Final **15%** WHT.
   - **Special Gains**: Flat **45%** tax for betting/gaming profits.
-- **👀 Live View Counter**: Real-time global visitor count powered by CounterAPI.
+- **👀 Live View Counter**: Real-time global visitor count powered by Abacus API.
 - **🎨 Premium UI**: "Fluid Cyber Wealth" theme with glassmorphism and smooth animations.
 - **📱 Smart Formatting**: Handles large numbers (Millions/Billions) gracefully and updates placeholders dynamically based on Monthly/Annual selections.
 - **📊 Visual Breakdown**: Interactive Donut Chart for visualizing salary distribution.
@@ -36,7 +36,7 @@ A premium, privacy-focused, and fully responsive Income Tax Calculator for Sri L
 - **Frontend**: React (Vite)
 - **Styling**: Tailwind CSS
 - **Icons**: Heroicons
-- **API**: CounterAPI (for view counting)
+- **API**: Abacus API (for view counting)
 - **Deployment**: GitHub Pages
 
 ## 🚀 Getting Started
