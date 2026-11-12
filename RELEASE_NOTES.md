@@ -1,5 +1,15 @@
 # Release Notes
 
+## [v1.9] - 2026-11-12
+
+### 🚀 New Features
+
+- **Dual Tax Regime Support (2025/26 Current & Apr 2027 Revision)**: Added support for the **81st Budget Speech – 2027 (Annexure V, Section 1.1)** Personal Income Tax revision (effective **April 1, 2027**) while keeping the current **Y/A 2025/2026** regime as the default.
+  - **Higher Relief**: Annual tax-free threshold increased from Rs. 1,800,000 (Rs. 150,000/month) to **Rs. 1,950,000 (Rs. 162,500/month)**.
+  - **Revised Slabs**: First Rs. 850,000 @ **6%**, followed by four equal Rs. 600,000 slabs at **12%**, **18%**, **24%**, **30%**, and Balance @ **36%**.
+- **Live Regime Comparison Pill**: Automatically calculates and displays the exact monthly or annual tax savings between **2025/2026 Current** and **Apr 2027 Revision** directly in the Hero Estimate card with one-click switching.
+- **Dynamic Official Information & Placeholders**: Navbar status badge, Basic Salary placeholder, Relief Structure, and Official Tax Slab table dynamically update to match the selected regime while preserving all existing EPF, ETF, Stamp Duty, Export Cap, WHT, and AIT rules.
+
 ## [v1.8] - 2026-08-08
 
 ### 🎨 UI & UX Improvements

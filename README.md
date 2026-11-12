@@ -1,5 +1,5 @@
 
-# 🇱🇰 Sri Lanka Income Tax Calculator (2025/2026)
+# 🇱🇰 Sri Lanka Income Tax Calculator (2025/2026 & Apr 2027 Revision)
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/shehansanjula/Sri-Lanka-Income-Tax-Calculator?style=for-the-badge&color=emerald)
 ![GitHub license](https://img.shields.io/github/license/shehansanjula/Sri-Lanka-Income-Tax-Calculator?style=for-the-badge&color=amber)
@@ -7,9 +7,11 @@
 [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
-A premium, privacy-focused, and fully responsive Income Tax Calculator for Sri Lanka, updated for the Year of Assessment 2025/2026. Built with modern web technologies to provide instant, accurate breakdowns of your salary, deductions, and take-home pay.
+A premium, privacy-focused, and fully responsive Income Tax Calculator for Sri Lanka supporting both the active **Y/A 2025/2026** tax regime (default) and the proposed **April 2027 Budget Revision**. Built with modern web technologies to provide instant, accurate breakdowns of your salary, deductions, regime tax savings, and take-home pay in a single view.
 
 ## ✨ Features
+
+- **🔄 Dual Tax Regime Toggle & Live Comparison**: Switch between **2025/26 Current** (default) and **Apr 2027 Revision (Budget Proposal)** without losing entered inputs, with an instant tax-savings comparison pill right inside the Hero Card.
 
 - **🚀 Instant Calculation**: Real-time updates as you type.
 - **🔒 Privacy First**: All data is processed locally in your browser. No data is sent to any server.
@@ -67,20 +69,29 @@ A premium, privacy-focused, and fully responsive Income Tax Calculator for Sri L
     npm run dev
     ```
 
-## 📜 Tax Logic (Y/A 2025/2026)
+## 📜 Tax Logic (Y/A 2025/2026 & Apr 2027 Revision)
 
-Based on the **Inland Revenue (Amendment) Act No. 02 of 2025** and the **Inland Revenue (Amendment) Act No. 11 of 2026**:
+Based on the **Inland Revenue (Amendment) Act No. 02 of 2025**, the **Inland Revenue (Amendment) Act No. 11 of 2026**, and the **81st Budget Speech – 2027 (Annexure V, Section 1.1)**:
 
 ### Standard Employment Income
 
-- **Tax-Free Threshold**: Rs. 150,000 / month (Rs. 1,800,000 / year).
-- **Relief**: First Rs. 150,000 is tax-free.
-- **Progressive Tax Slabs (Annual Taxable Income)**:
-  - First Rs. 1,000,000: **6%**
-  - Next Rs. 500,000: **18%**
-  - Next Rs. 500,000: **24%**
-  - Next Rs. 500,000: **30%**
-  - Balance: **36%**
+- **Y/A 2025/2026 (Default / Active)**:
+  - **Tax-Free Threshold**: Rs. 150,000 / month (Rs. 1,800,000 / year).
+  - **Progressive Tax Slabs (Annual Taxable Income)**:
+    - First Rs. 1,000,000: **6%**
+    - Next Rs. 500,000: **18%**
+    - Next Rs. 500,000: **24%**
+    - Next Rs. 500,000: **30%**
+    - Balance: **36%**
+- **Apr 2027 Revision (Budget 2027 Proposal · Eff. April 1, 2027)**:
+  - **Tax-Free Threshold**: Rs. 162,500 / month (Rs. 1,950,000 / year).
+  - **Progressive Tax Slabs (Annual Taxable Income)**:
+    - First Rs. 850,000: **6%**
+    - Next Rs. 600,000: **12%**
+    - Next Rs. 600,000: **18%**
+    - Next Rs. 600,000: **24%**
+    - Next Rs. 600,000: **30%**
+    - Balance: **36%**
 - **APIT Tax Filing Exemption**: Salaried employees whose only income is salary subject to APIT generally do not need to maintain an income tax file or file a return (the relief also covers up to Rs. 5,000 in interest income).
 
 ### Advanced Categories & Compliance Updates

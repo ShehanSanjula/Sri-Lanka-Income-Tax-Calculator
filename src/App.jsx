@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { calculateTax, formatCurrency, formatCompactNumber, formatViewCount } from './utils/taxCalculator';
+import { calculateTax, formatCurrency, formatCompactNumber, formatViewCount, TAX_REGIMES, DEFAULT_REGIME_ID } from './utils/taxCalculator';
 
 function App() {
   // Helper to remove commas for calculation
@@ -13,11 +13,15 @@ function App() {
   const [dividendIncome, setDividendIncome] = useState('');
   const [specialGains, setSpecialGains] = useState('');
   const [mode, setMode] = useState('monthly');
+  const [taxRegime, setTaxRegime] = useState(DEFAULT_REGIME_ID);
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [result, setResult] = useState(null);
+  const [comparisonResult, setComparisonResult] = useState(null);
   const [viewCount, setViewCount] = useState(null); // Initialize as null for loading state
   const [professionType, setProfessionType] = useState('salaried');
 
+  const activeRegime = TAX_REGIMES[taxRegime] || TAX_REGIMES[DEFAULT_REGIME_ID];
+  const otherRegimeId = taxRegime === '2025_2026' ? '2027_04' : '2025_2026';
   const isExempt = professionType === 'salaried' && (parseFloat(cleanNumber(otherAllowances)) || 0) === 0;
 
   const handleModeChange = (newMode) => {
@@ -28,11 +32,11 @@ function App() {
     setFixedAllowances('');
     setOtherAllowances('');
     setExportIncome('');
-    setExportIncome('');
     setInvestmentIncome('');
     setDividendIncome('');
     setSpecialGains('');
     setResult(null);
+    setComparisonResult(null);
   };
 
   useEffect(() => {
@@ -69,12 +73,15 @@ function App() {
 
     if (basicNum > 0 && basicNum <= 1000) {
       setResult(null);
+      setComparisonResult(null);
     } else if (basicVal || fixedVal || otherVal || exportVal || investVal || dividendVal || specialVal) {
-      setResult(calculateTax(basicVal, fixedVal, otherVal, exportVal, investVal, dividendVal, specialVal, mode, professionType));
+      setResult(calculateTax(basicVal, fixedVal, otherVal, exportVal, investVal, dividendVal, specialVal, mode, professionType, taxRegime));
+      setComparisonResult(calculateTax(basicVal, fixedVal, otherVal, exportVal, investVal, dividendVal, specialVal, mode, professionType, otherRegimeId));
     } else {
       setResult(null);
+      setComparisonResult(null);
     }
-  }, [basic, fixedAllowances, otherAllowances, exportIncome, investmentIncome, dividendIncome, specialGains, mode, professionType]);
+  }, [basic, fixedAllowances, otherAllowances, exportIncome, investmentIncome, dividendIncome, specialGains, mode, professionType, taxRegime, otherRegimeId]);
 
   return (
     <div className="min-h-screen bg-[#022c22] text-emerald-100 font-sans selection:bg-emerald-500/30 overflow-x-hidden relative custom-scrollbar">
@@ -115,14 +122,23 @@ function App() {
               </div>
               <div>
                 <h1 className="text-xl font-bold text-slate-100 tracking-tight group-hover:text-emerald-300 transition-colors">Sri Lanka Tax Calculator</h1>
-                <p className="text-[10px] text-amber-400 font-mono uppercase tracking-widest pl-0.5">Y/A 2025/2026</p>
+                <p className="text-[10px] text-amber-400 font-mono uppercase tracking-widest pl-0.5">{activeRegime.label}</p>
               </div>
             </div>
             <div className="hidden md:flex items-center gap-3">
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-900/20 border border-emerald-500/20 text-xs font-medium text-emerald-100/80 hover:bg-emerald-900/30 transition-colors cursor-default">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                Official Rates
-              </div>
+              <button
+                type="button"
+                onClick={() => setTaxRegime(otherRegimeId)}
+                title={`Switch to ${TAX_REGIMES[otherRegimeId].label}`}
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-medium transition-colors cursor-pointer ${
+                  activeRegime.isProposed
+                    ? 'bg-amber-900/30 border-amber-500/30 text-amber-200 hover:bg-amber-900/40'
+                    : 'bg-emerald-900/20 border-emerald-500/20 text-emerald-100/80 hover:bg-emerald-900/30'
+                }`}
+              >
+                <span className={`w-2 h-2 rounded-full animate-pulse ${activeRegime.isProposed ? 'bg-amber-400' : 'bg-emerald-500'}`}></span>
+                {activeRegime.badgeText}
+              </button>
               <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-900/20 border border-amber-500/20 text-xs font-medium text-amber-100/80 hover:bg-amber-900/30 transition-colors cursor-default" title={viewCount !== null ? `Total Views: ${new Intl.NumberFormat('en-US').format(viewCount)}` : "Total Views"}>
                 <svg className="w-3.5 h-3.5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -162,7 +178,38 @@ function App() {
               <div className="glass-card p-6 rounded-3xl border border-amber-500/10 shadow-2xl relative overflow-hidden group hover:border-amber-500/30 transition-all duration-500">
                 <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
 
-                <div className="relative space-y-6">
+                <div className="relative space-y-5">
+                  {/* Tax Regime Toggle */}
+                  <div>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="text-[10px] font-bold text-emerald-200/80 uppercase tracking-widest">Tax Regime</span>
+                      <span className={`text-[10px] font-mono ${activeRegime.isProposed ? 'text-amber-400' : 'text-emerald-400'}`}>
+                        {activeRegime.isProposed ? 'Budget Proposal' : 'Active Law'}
+                      </span>
+                    </div>
+                    <div className="bg-[#064e3b]/40 p-1 rounded-xl grid grid-cols-2 gap-1 border border-amber-500/10">
+                      {Object.values(TAX_REGIMES).map((regime) => {
+                        const isActive = taxRegime === regime.id;
+                        return (
+                          <button
+                            key={regime.id}
+                            type="button"
+                            onClick={() => setTaxRegime(regime.id)}
+                            className={`py-2 px-2 rounded-lg text-xs font-semibold transition-all duration-300 cursor-pointer ${
+                              isActive
+                                ? regime.isProposed
+                                  ? 'bg-amber-600/80 text-white shadow-lg shadow-black/20 ring-1 ring-amber-300/30'
+                                  : 'bg-[#065f46] text-white shadow-lg shadow-black/20 ring-1 ring-white/10'
+                                : 'text-emerald-200/60 hover:text-emerald-100'
+                            }`}
+                          >
+                            {regime.shortLabel}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
                   {/* Mode Toggle */}
                   <div className="bg-[#064e3b]/40 p-1.5 rounded-xl inline-flex w-full border border-amber-500/10">
                     <button onClick={() => handleModeChange('monthly')} className={`flex-1 py-2 rounded-lg text-xs font-semibold transition-all duration-300 ${mode === 'monthly' ? 'bg-[#065f46] text-white shadow-lg shadow-black/20 ring-1 ring-white/10' : 'text-emerald-200/60 hover:text-emerald-100'}`}>Monthly</button>
@@ -208,7 +255,9 @@ function App() {
                       value={basic}
                       onChange={setBasic}
                       max={mode === 'monthly' ? 5000000 : 60000000}
-                      placeholder={mode === 'monthly' ? "150,000" : "1,800,000"}
+                      placeholder={mode === 'monthly'
+                        ? (taxRegime === '2027_04' ? "162,500" : "150,000")
+                        : (taxRegime === '2027_04' ? "1,950,000" : "1,800,000")}
                       suffix="LKR"
                       icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" /></svg>}
                       subtext={professionType === "independent" ? "Not applicable for independent profile" : "Subject to EPF/ETF"}
@@ -341,6 +390,50 @@ function App() {
                           <Badge label="Total Earnings" value={formatCurrency(result.totalEarnings)} />
                           <Badge label="Total Deductions" value={formatCurrency(result.tax + result.epfEmployee + result.stampDuty)} color="text-red-300" />
                         </div>
+
+                        {comparisonResult && (() => {
+                          const taxSavingsVsNew = result.tax - comparisonResult.tax;
+                          const taxSavingsVsOld = comparisonResult.tax - result.tax;
+                          const periodSuffix = mode === 'monthly' ? '/mo' : '/yr';
+
+                          let message = '';
+                          let toneClass = 'bg-emerald-900/30 border-emerald-500/20 text-emerald-200 hover:bg-emerald-900/50';
+
+                          if (taxRegime === '2025_2026') {
+                            if (taxSavingsVsNew > 0.005) {
+                              message = `Apr 2027 Revision saves ${formatCurrency(taxSavingsVsNew)}${periodSuffix} in tax`;
+                              toneClass = 'bg-amber-500/10 border-amber-500/30 text-amber-200 hover:bg-amber-500/20';
+                            } else if (taxSavingsVsNew < -0.005) {
+                              message = `Apr 2027 Revision adds ${formatCurrency(Math.abs(taxSavingsVsNew))}${periodSuffix} in tax`;
+                            } else {
+                              message = 'Same tax under Apr 2027 Revision';
+                            }
+                          } else {
+                            if (taxSavingsVsOld > 0.005) {
+                              message = `Saves ${formatCurrency(taxSavingsVsOld)}${periodSuffix} vs. 2025/2026`;
+                              toneClass = 'bg-emerald-500/15 border-emerald-400/30 text-emerald-200 hover:bg-emerald-500/25';
+                            } else if (taxSavingsVsOld < -0.005) {
+                              message = `+${formatCurrency(Math.abs(taxSavingsVsOld))}${periodSuffix} vs. 2025/2026`;
+                            } else {
+                              message = 'Same tax as 2025/2026';
+                            }
+                          }
+
+                          return (
+                            <div className="mt-4 flex justify-center">
+                              <button
+                                type="button"
+                                onClick={() => setTaxRegime(otherRegimeId)}
+                                className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-medium transition-all cursor-pointer ${toneClass}`}
+                              >
+                                <span className="font-mono">{message}</span>
+                                <span className="text-[10px] uppercase tracking-wider font-bold opacity-80">
+                                  Switch &rarr;
+                                </span>
+                              </button>
+                            </div>
+                          );
+                        })()}
                       </div>
                     </div>
                   </div>
@@ -436,29 +529,38 @@ function App() {
             <div className="grid md:grid-cols-2 gap-8">
               <div className="space-y-6">
                 <NoteBlock title="Legislative Authority">
-                  <p>Based on the <strong>Inland Revenue (Amendment) Act No. 02 of 2025</strong> and the <strong>Inland Revenue (Amendment) Act No. 11 of 2026</strong>. Tax rules and rates are fully compliant with the latest June 2026 compliance updates.</p>
-                  <p className="mt-2 text-xs text-emerald-300">Includes provisions for APIT salaried filing exemptions, 5% freelancer Advance Income Tax (AIT) over Rs. 100,000/month, and the Section 52A life insurance exemptions.</p>
+                  {activeRegime.isProposed ? (
+                    <>
+                      <p>Based on the <strong>81st Budget Speech – 2027 (Annexure V, Section 1.1)</strong> Personal Income Tax revisions, scheduled to take effect from <strong>April 1, 2027</strong> <em>(subject to statutory enactment)</em>.</p>
+                      <p className="mt-2 text-xs text-amber-300/90">Existing June 2026 rules from the Inland Revenue (Amendment) Act No. 11 of 2026 — APIT salaried filing exemption, 5% freelancer AIT over Rs. 100,000/month, and Section 52A life insurance exemptions — remain included.</p>
+                    </>
+                  ) : (
+                    <>
+                      <p>Based on the <strong>Inland Revenue (Amendment) Act No. 02 of 2025</strong> and the <strong>Inland Revenue (Amendment) Act No. 11 of 2026</strong>. Tax rules and rates are fully compliant with the latest June 2026 compliance updates.</p>
+                      <p className="mt-2 text-xs text-emerald-300">Includes provisions for APIT salaried filing exemptions, 5% freelancer Advance Income Tax (AIT) over Rs. 100,000/month, and the Section 52A life insurance exemptions.</p>
+                    </>
+                  )}
                 </NoteBlock>
                 <NoteBlock title="Relief Structure">
-                  <p>Annual Tax Free Threshold: <strong>Rs. 1,800,000</strong></p>
-                  <p>Monthly Tax Free Threshold: <strong>Rs. 150,000</strong></p>
+                  <p>Annual Tax Free Threshold: <strong>Rs. {new Intl.NumberFormat('en-US').format(activeRegime.annualRelief)}</strong></p>
+                  <p>Monthly Tax Free Threshold: <strong>Rs. {new Intl.NumberFormat('en-US').format(activeRegime.annualRelief / 12)}</strong></p>
                 </NoteBlock>
               </div>
               <div className="glass-card rounded-xl border border-emerald-500/10 overflow-hidden">
                 <table className="w-full text-sm">
                   <thead className="bg-emerald-900/30 text-emerald-100">
                     <tr>
-                      <th className="px-4 py-3 text-left font-medium">Monthly Income Slab</th>
+                      <th className="px-4 py-3 text-left font-medium">Monthly Income Slab ({activeRegime.shortLabel})</th>
                       <th className="px-4 py-3 text-left font-medium">Rate</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-emerald-500/10 text-emerald-200/70">
-                    <tr><td className="px-4 py-2.5">First 150,000</td><td className="px-4 py-2.5 text-emerald-400">Relief</td></tr>
-                    <tr><td className="px-4 py-2.5">Next 100,000 (up to 250k)</td><td className="px-4 py-2.5 text-white">6%</td></tr>
-                    <tr><td className="px-4 py-2.5">Next 50,000</td><td className="px-4 py-2.5 text-white">18%</td></tr>
-                    <tr><td className="px-4 py-2.5">Next 50,000</td><td className="px-4 py-2.5 text-white">24%</td></tr>
-                    <tr><td className="px-4 py-2.5">Next 50,000</td><td className="px-4 py-2.5 text-white">30%</td></tr>
-                    <tr><td className="px-4 py-2.5">Balance</td><td className="px-4 py-2.5 text-white">36%</td></tr>
+                    {activeRegime.slabRows.map((row, idx) => (
+                      <tr key={idx}>
+                        <td className="px-4 py-2.5">{row.slab}</td>
+                        <td className={`px-4 py-2.5 ${row.isRelief ? 'text-emerald-400' : 'text-white'}`}>{row.rate}</td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>

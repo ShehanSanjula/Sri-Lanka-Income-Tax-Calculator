@@ -1,22 +1,70 @@
 /**
- * Tax Calculator for Sri Lanka (Year of Assessment 2025/2026)
+ * Tax Calculator for Sri Lanka (Y/A 2025/2026 & Proposed April 2027 Budget Revision)
  * Includes EPF, ETF, and Take Home Pay calculations.
- * 
+ *
  * EPF Employee: 8% of (Basic + Fixed Allowances)
  * EPF Employer: 12% of (Basic + Fixed Allowances)
  * ETF Employer: 3% of (Basic + Fixed Allowances)
  * APIT (Tax): Based on Total Earnings (Basic + Fixed + Other Allowances) - Relief
  */
 
-export const TAX_BRACKETS = [
-    { limit: 1000000, rate: 0.06 },
-    { limit: 500000, rate: 0.18 },
-    { limit: 500000, rate: 0.24 },
-    { limit: 500000, rate: 0.30 },
-    { limit: Infinity, rate: 0.36 },
-];
+export const TAX_REGIMES = {
+    '2025_2026': {
+        id: '2025_2026',
+        shortLabel: '2025/26 Current',
+        label: 'Y/A 2025/2026',
+        badgeText: 'Official Rates',
+        isProposed: false,
+        effectiveDate: 'April 1, 2025',
+        annualRelief: 1800000, // 150,000 monthly
+        brackets: [
+            { limit: 1000000, rate: 0.06 },
+            { limit: 500000, rate: 0.18 },
+            { limit: 500000, rate: 0.24 },
+            { limit: 500000, rate: 0.30 },
+            { limit: Infinity, rate: 0.36 },
+        ],
+        slabRows: [
+            { slab: 'First 150,000', rate: 'Relief', isRelief: true },
+            { slab: 'Next 100,000 (up to 250k)', rate: '6%' },
+            { slab: 'Next 50,000', rate: '18%' },
+            { slab: 'Next 50,000', rate: '24%' },
+            { slab: 'Next 50,000', rate: '30%' },
+            { slab: 'Balance', rate: '36%' },
+        ],
+    },
+    '2027_04': {
+        id: '2027_04',
+        shortLabel: 'Apr 2027 (New)',
+        label: 'Eff. Apr 2027 (Budget)',
+        badgeText: 'Proposed · Apr 2027',
+        isProposed: true,
+        effectiveDate: 'April 1, 2027',
+        annualRelief: 1950000, // 162,500 monthly
+        brackets: [
+            { limit: 850000, rate: 0.06 },
+            { limit: 600000, rate: 0.12 },
+            { limit: 600000, rate: 0.18 },
+            { limit: 600000, rate: 0.24 },
+            { limit: 600000, rate: 0.30 },
+            { limit: Infinity, rate: 0.36 },
+        ],
+        slabRows: [
+            { slab: 'First 162,500', rate: 'Relief', isRelief: true },
+            { slab: 'Next 70,833 (Rs. 850k/yr)', rate: '6%' },
+            { slab: 'Next 50,000 (Rs. 600k/yr)', rate: '12%' },
+            { slab: 'Next 50,000 (Rs. 600k/yr)', rate: '18%' },
+            { slab: 'Next 50,000 (Rs. 600k/yr)', rate: '24%' },
+            { slab: 'Next 50,000 (Rs. 600k/yr)', rate: '30%' },
+            { slab: 'Balance (Above 433,333)', rate: '36%' },
+        ],
+    },
+};
 
-export const ANNUAL_RELIEF = 1800000; // 150,000 monthly
+export const DEFAULT_REGIME_ID = '2025_2026';
+
+export const TAX_BRACKETS = TAX_REGIMES[DEFAULT_REGIME_ID].brackets;
+export const ANNUAL_RELIEF = TAX_REGIMES[DEFAULT_REGIME_ID].annualRelief;
 export const EXPORT_INCOME_CAP_RATE = 0.15;
 export const INVESTMENT_TAX_RATE = 0.10;
 export const DIVIDEND_TAX_RATE = 0.15;
@@ -66,7 +114,8 @@ export const formatViewCount = (number) => {
     return number.toString();
 };
 
-export const calculateTax = (basicSalary, fixedAllowances, otherAllowances, exportIncomeInput, investmentIncomeInput, dividendIncomeInput, specialGainsInput, mode = 'monthly', professionType = 'salaried') => {
+export const calculateTax = (basicSalary, fixedAllowances, otherAllowances, exportIncomeInput, investmentIncomeInput, dividendIncomeInput, specialGainsInput, mode = 'monthly', professionType = 'salaried', regimeId = DEFAULT_REGIME_ID) => {
+    const regime = TAX_REGIMES[regimeId] || TAX_REGIMES[DEFAULT_REGIME_ID];
     const isMonthly = mode === 'monthly';
     const multiplier = isMonthly ? 12 : 1;
 
@@ -97,7 +146,7 @@ export const calculateTax = (basicSalary, fixedAllowances, otherAllowances, expo
 
     // --- Tax Calculation ---
     // 1. Standard Income Tax (Progressive Slabs)
-    const annualRelief = ANNUAL_RELIEF;
+    const annualRelief = regime.annualRelief;
 
     // Taxable Standard Income
     let taxableStandard = Math.max(0, annualStandardEarnings - annualRelief);
@@ -141,7 +190,7 @@ export const calculateTax = (basicSalary, fixedAllowances, otherAllowances, expo
     // Tax on Standard
     let tempStandard = Math.max(0, annualStandardEarnings - usedRelief);
 
-    for (const bracket of TAX_BRACKETS) {
+    for (const bracket of regime.brackets) {
         if (tempStandard <= 0) break;
 
         const amountInBracket = Math.min(tempStandard, bracket.limit);
@@ -176,7 +225,7 @@ export const calculateTax = (basicSalary, fixedAllowances, otherAllowances, expo
         let startOffset = taxableStandard; // How much taxable space occupied by standard
         let remainingToTax = taxableExport;
 
-        for (const bracket of TAX_BRACKETS) {
+        for (const bracket of regime.brackets) {
             if (remainingToTax <= 0) break;
 
             // How much space left in this bracket?
@@ -207,7 +256,7 @@ export const calculateTax = (basicSalary, fixedAllowances, otherAllowances, expo
     let incomeB = Math.max(0, annualExportIncome - Math.max(0, annualRelief - annualStandardEarnings)); // Export Taxable
 
     // We process brackets sequentially
-    for (const bracket of TAX_BRACKETS) {
+    for (const bracket of regime.brackets) {
         if (incomeA <= 0 && incomeB <= 0) break;
 
         const limit = bracket.limit; // Capacity of this bracket
