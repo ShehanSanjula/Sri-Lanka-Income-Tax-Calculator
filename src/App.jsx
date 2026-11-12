@@ -396,26 +396,33 @@ function App() {
                           const taxSavingsVsOld = comparisonResult.tax - result.tax;
                           const periodSuffix = mode === 'monthly' ? '/mo' : '/yr';
 
-                          let message = '';
+                          let compLabel = '';
+                          let compValue = '';
                           let toneClass = 'bg-emerald-900/30 border-emerald-500/20 text-emerald-200 hover:bg-emerald-900/50';
 
                           if (taxRegime === '2025_2026') {
                             if (taxSavingsVsNew > 0.005) {
-                              message = `Apr 2027 Revision saves ${formatCurrency(taxSavingsVsNew)}${periodSuffix} in tax`;
+                              compLabel = 'Apr 2027 Saves';
+                              compValue = `${formatCurrency(taxSavingsVsNew)}${periodSuffix}`;
                               toneClass = 'bg-amber-500/10 border-amber-500/30 text-amber-200 hover:bg-amber-500/20';
                             } else if (taxSavingsVsNew < -0.005) {
-                              message = `Apr 2027 Revision adds ${formatCurrency(Math.abs(taxSavingsVsNew))}${periodSuffix} in tax`;
+                              compLabel = 'Apr 2027 Adds';
+                              compValue = `${formatCurrency(Math.abs(taxSavingsVsNew))}${periodSuffix}`;
                             } else {
-                              message = 'Same tax under Apr 2027 Revision';
+                              compLabel = 'Apr 2027 Revision';
+                              compValue = 'Same Tax';
                             }
                           } else {
                             if (taxSavingsVsOld > 0.005) {
-                              message = `Saves ${formatCurrency(taxSavingsVsOld)}${periodSuffix} vs. 2025/2026`;
+                              compLabel = 'Saves vs. 2025/26';
+                              compValue = `${formatCurrency(taxSavingsVsOld)}${periodSuffix}`;
                               toneClass = 'bg-emerald-500/15 border-emerald-400/30 text-emerald-200 hover:bg-emerald-500/25';
                             } else if (taxSavingsVsOld < -0.005) {
-                              message = `+${formatCurrency(Math.abs(taxSavingsVsOld))}${periodSuffix} vs. 2025/2026`;
+                              compLabel = 'Diff vs. 2025/26';
+                              compValue = `+${formatCurrency(Math.abs(taxSavingsVsOld))}${periodSuffix}`;
                             } else {
-                              message = 'Same tax as 2025/2026';
+                              compLabel = 'Vs. 2025/26';
+                              compValue = 'Same Tax';
                             }
                           }
 
@@ -424,10 +431,13 @@ function App() {
                               <button
                                 type="button"
                                 onClick={() => setTaxRegime(otherRegimeId)}
-                                className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-medium transition-all cursor-pointer ${toneClass}`}
+                                className={`flex flex-wrap sm:flex-nowrap items-center justify-center gap-x-2.5 gap-y-1.5 px-4 py-2 sm:py-1.5 rounded-2xl sm:rounded-full border transition-all cursor-pointer max-w-full ${toneClass}`}
                               >
-                                <span className="font-mono">{message}</span>
-                                <span className="text-[10px] uppercase tracking-wider font-bold opacity-80">
+                                <div className="flex items-center gap-2 whitespace-nowrap">
+                                  <span className="text-[10px] font-bold uppercase tracking-wider opacity-85">{compLabel}</span>
+                                  <span className="text-xs sm:text-sm font-bold font-mono">{compValue}</span>
+                                </div>
+                                <span className="text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full bg-white/10 whitespace-nowrap">
                                   Switch &rarr;
                                 </span>
                               </button>

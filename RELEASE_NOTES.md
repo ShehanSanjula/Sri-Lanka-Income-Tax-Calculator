@@ -1,8 +1,8 @@
 # Release Notes
 
-## [v1.9] - 2026-11-12
+## 🚀 v1.9 — Budget 2027 PAYE Revision & Live Regime Comparison
 
-### 🚀 New Features
+### ✨ New Features
 
 - **Dual Tax Regime Support (2025/26 Current & Apr 2027 Revision)**: Added support for the **81st Budget Speech – 2027 (Annexure V, Section 1.1)** Personal Income Tax revision (effective **April 1, 2027**) while keeping the current **Y/A 2025/2026** regime as the default.
   - **Higher Relief**: Annual tax-free threshold increased from Rs. 1,800,000 (Rs. 150,000/month) to **Rs. 1,950,000 (Rs. 162,500/month)**.
